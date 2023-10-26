@@ -2,13 +2,14 @@
 
 int check_infile(t_data *data)
 {
-    size_t len_infile = ft_strlen((*data->list_head)->infile->type);
+    size_t len_infile = 0;
     t_token_node *curr;
     int i = 1;
 
     curr = (*data->list_head)->infile;
     while (curr != NULL)
     {
+        len_infile = ft_strlen(curr->type);
         printf("child %d { ", i);
         if(ft_strncmp(curr->type, "<", len_infile) == 0)
             printf("type [%s] : value [%s] }\n", curr->type, curr->value);
@@ -22,13 +23,14 @@ int check_infile(t_data *data)
 
 int check_outfile(t_data *data)
 {
-    size_t len_outfile = ft_strlen((*data->list_head)->outfile->type);
+    size_t len_outfile = 0;
     t_token_node *curr;
     int i = 1;
 
     curr = (*data->list_head)->outfile;
     while (curr != NULL)
     {
+        len_outfile = ft_strlen(curr->type);
         printf("child %d { ", i);
         if(ft_strncmp(curr->type, ">", len_outfile) == 0)
             printf("type [%s] : value [%s] --> truncate }\n", curr->type, curr->value);
