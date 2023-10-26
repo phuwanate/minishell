@@ -9,11 +9,11 @@ int check_infile(t_data *data)
     curr = (*data->list_head)->infile;
     while (curr != NULL)
     {
-        printf("child %d {", i);
+        printf("child %d { ", i);
         if(ft_strncmp(curr->type, "<", len_infile) == 0)
-            printf("type [%s] : value [%s]}\n", curr->type, curr->value);
+            printf("type [%s] : value [%s] }\n", curr->type, curr->value);
         else if(ft_strncmp(curr->type, "<<", len_infile) == 0)
-            printf("type [%s] : value [%s]}\n", curr->type, curr->value);
+            printf("type [%s] : value [%s] }\n", curr->type, curr->value);
         curr = curr->next;
         i++;
     }

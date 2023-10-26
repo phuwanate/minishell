@@ -56,11 +56,11 @@ int make_outfile(t_list_node *token_center)
 int make_cmd(t_list_node *token_center)
 {
     token_center->cmd = malloc(sizeof(char *) * 3); // for {"ls", "-l", NULL};
-    token_center->cmd[2] = NULL;
     token_center->cmd[0] = malloc((sizeof(char) * (7 + 1))); // for "/bin/ls"
     token_center->cmd[1] = malloc((sizeof(char) * (1 + 1))); // for "-l"
     path_cpy(token_center->cmd[0], "/bin/ls");
     path_cpy(token_center->cmd[1], "-l");
+    token_center->cmd[2] = NULL;
     return (0);
 }
 
