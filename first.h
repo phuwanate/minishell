@@ -28,6 +28,10 @@ typedef struct s_data
     char                **env;
     int                 errnum;
     t_list_node         **list_head;
+    int                 pid; //first
+    int                 fd_in; //first
+    int                 fd_out; //first
+    int                 num_child;
 }   t_data;
 
 

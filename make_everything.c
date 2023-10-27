@@ -71,6 +71,7 @@ int make_token_center(t_data *data)
     make_infile(token_center);
     make_outfile(token_center);
     make_cmd(token_center);
+    data->num_child = 1;
     data->list_head = &token_center;
     return (0);
 }
