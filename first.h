@@ -25,6 +25,8 @@ typedef struct s_list_node
 //data center
 typedef struct s_data
 {
+    int                 stdin_copy;
+    int                 stdout_copy;
     char                **env;
     int                 errnum;
     t_list_node         **list_head;

@@ -3,13 +3,13 @@
 int make_infile(t_list_node *token_center)
 {
     char *type = "<";
-    // char *type2 = "<<";
+    char *type2 = "<";
     char *value = "i1";
-    // char *value2 = "i2";
+    char *value2 = "i2";
     size_t len_type = ft_strlen(type);
-    // size_t len_type2 = ft_strlen(type2);
+    size_t len_type2 = ft_strlen(type2);
     size_t len_value = ft_strlen(value);
-    // size_t len_value2 = ft_strlen(value2);
+    size_t len_value2 = ft_strlen(value2);
     //node 1
     token_center->infile = malloc(sizeof(t_token_node));
     token_center->infile->type = malloc(len_type + 1);
@@ -18,19 +18,19 @@ int make_infile(t_list_node *token_center)
     path_cpy(token_center->infile->value, value);
     token_center->infile->next = NULL;
     //node 2
-    // token_center->next->infile = malloc(sizeof(t_token_node));
-    // token_center->next->infile->type = malloc(len_type2 + 1);
-    // path_cpy(token_center->next->infile->type, type2);
-    // token_center->next->infile->value = malloc(len_value2 + 1);
-    // path_cpy(token_center->next->infile->value, value2);
-    // token_center->next->infile->next = NULL;
+    token_center->next->infile = malloc(sizeof(t_token_node));
+    token_center->next->infile->type = malloc(len_type2 + 1);
+    path_cpy(token_center->next->infile->type, type2);
+    token_center->next->infile->value = malloc(len_value2 + 1);
+    path_cpy(token_center->next->infile->value, value2);
+    token_center->next->infile->next = NULL;
     return (0);
 }
 
 int make_outfile(t_list_node *token_center)
 {
     char *type = ">";
-    char *type2 = ">>";
+    char *type2 = ">";
     char *value = "out1";
     char *value2 = "out2";
     size_t len_type = ft_strlen(type);
