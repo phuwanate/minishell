@@ -1,45 +1,49 @@
 #include "first.h"
 
-int check_infile(t_data *data)
+int check_infile(t_token_node *curr_token, t_data *data)
 {
     size_t len_infile = 0;
-    t_token_node *curr;
     int i = 1;
 
-    curr = (*data->list_head)->infile;
-    while (curr != NULL)
+    while (curr_token != NULL)
     {
-        len_infile = ft_strlen(curr->type);
-        //printf("child %d { ", i);
-        if(ft_strncmp(curr->type, "<", len_infile) == 0)
-            data->fd_in = open(curr->value, O_RDONLY);
-            //printf("type [%s] : value [%s] }\n", curr->type, curr->value);//open infile
-        else if(ft_strncmp(curr->type, "<<", len_infile) == 0)
-            printf("type [%s] : value [%s] }\n", curr->type, curr->value);//open heredoc
-        curr = curr->next;
+        len_infile = ft_strlen(curr_token->type);
+        // dprintf(1,"child %d { ", i);
+        if(ft_strncmp(curr_token->type, "<", len_infile) == 0)
+            *data->fd_in = open(curr_token->value, O_RDONLY);
+            // dprintf(1,"type [%s] : value [%s] }\n", curr_token->type, curr_token->value);//open infile
+        else if(ft_strncmp(curr_token->type, "<<", len_infile) == 0)
+        {}    // dprintf(1,"type [%s] : value [%s] }\n", curr_token->type, curr_token->value);//open heredoc
+        curr_token = curr_token->next;
         i++;
     }
     return (0);
 }
 
-int check_outfile(t_data *data)
+int check_outfile(t_token_node *curr_token, t_data *data)
 {
     size_t len_outfile = 0;
-    t_token_node *curr;
     int i = 1;
 
-    curr = (*data->list_head)->outfile;
-    while (curr != NULL)
+    while (curr_token != NULL)
     {
-        len_outfile = ft_strlen(curr->type);
-        // printf("child %d { ", i);
-        if(ft_strncmp(curr->type, ">", len_outfile) == 0)
-            data->fd_out = open(curr->value, O_TRUNC | O_WRONLY | O_CREAT, 0644);
-            //printf("type [%s] : value [%s] --> truncate }\n", curr->type, curr->value);
-        else if(ft_strncmp(curr->type, ">>", len_outfile) == 0)
-            data->fd_out = open(curr->value, O_APPEND | O_WRONLY | O_CREAT, 0644);
-            //printf("type [%s] : value [%s] --> append }\n", curr->type, curr->value);
-        curr = curr->next;
+        len_outfile = ft_strlen(curr_token->type);
+        // dprintf(1,"child %d { ", i);
+        if(ft_strncmp(curr_token->type, ">", len_outfile) == 0)
+        {
+            *data->fd_out = open(curr_token->value, O_TRUNC | O_WRONLY | O_CREAT, 0644);
+            // dprintf(1,"type [%s] : value [%s] --> truncate }\n", curr_token->type, curr_token->value);
+            dup2(*data->fd_out, STDOUT_FILENO);
+            close(*data->fd_out);
+        }
+        else if(ft_strncmp(curr_token->type, ">>", len_outfile) == 0)
+        {   
+            *data->fd_out = open(curr_token->value, O_APPEND | O_WRONLY | O_CREAT, 0644);
+            // dprintf(1,"type [%s] : value [%s] --> append }\n", curr_token->type, curr_token->value);
+            dup2(*data->fd_out, STDOUT_FILENO);
+            close(*data->fd_out);
+        }
+        curr_token = curr_token->next;
         i++;
     }
     return (0);
@@ -49,27 +53,35 @@ int executor(t_data *data)
 {
     int i;
     int fd_pipe[2];
+    t_list_node *curr_list;
 
     i = 0;
-    check_infile(data);
-    while (i < data->num_child)
+    curr_list = (*data->list_head);
+    while (curr_list != NULL)
     {
-        dup2(data->fd_in, 0);
-        close(data->fd_in);
-        if (i == data->num_child - 1)
+        check_infile(curr_list->infile, data); // if found infile go open
+        dup2(*data->fd_in, 0);
+        close(*data->fd_in);
+        check_outfile(curr_list->outfile, data);// if found outfile go open
+        if(curr_list->next != NULL) 
         {
-            if ((*data->list_head)->outfile != NULL)
-                check_outfile(data);
-        }
-        else
-        {
+            dprintf(2, "here\n");
             pipe(fd_pipe);
-            data->fd_in = fd_pipe[0];
-            data->fd_out = fd_pipe[1];
+            *data->fd_in = fd_pipe[0]; // init pipe[0] to stdin
+            *data->fd_out = fd_pipe[1]; // init pipe[1] to stdout
+            dup2(*data->fd_out, STDOUT_FILENO);
+            close(*data->fd_out);
         }
+        data->pid[i] = fork();
+        if(data->pid[i] == 0)
+            execve(curr_list->cmd[0], curr_list->cmd, data->env);
+        curr_list = curr_list->next;
         i++;
     }
-    return (0);
+    i = 0;
+    while(i < data->num_child)
+        waitpid(data->pid[i++], &data->exit_status, WUNTRACED);
+    return (WEXITSTATUS(data->exit_status));
 }
 
 int main(int ac, char *av[], char *env[])
@@ -78,16 +90,6 @@ int main(int ac, char *av[], char *env[])
 
     data.env = env;
     make_token_center(&data);   
-    executor(&data);
-    
-    execve((*data.list_head)->cmd[0], (*data.list_head)->cmd, data.env);
+    dprintf(2, "%d\n", executor(&data));
 }
-
-    //char *test[] = {"/bin/cat", "cat", NULL};
-    // execve((*data.list_head)->cmd[0], (*data.list_head)->cmd, data.env);
-    //Debug token_center;
-    // printf("%s\n", (*data.list_head)->infile->type);
-    // printf("%s\n", (*data.list_head)->infile->value);
-    // printf("%s\n", (*data.list_head)->outfile->type);
-    // printf("%s\n", (*data.list_head)->outfile->value);
     
