@@ -16,7 +16,7 @@ int make_infile(t_list_node *token_center)
     path_cpy(token_center->infile->type, type);
     token_center->infile->value = malloc(len_value + 1);
     path_cpy(token_center->infile->value, value);
-    token_center->infile->next = NULL;
+    // token_center->infile->next = NULL;
     //node 2
     token_center->next->infile = malloc(sizeof(t_token_node));
     token_center->next->infile->type = malloc(len_type2 + 1);
@@ -24,6 +24,13 @@ int make_infile(t_list_node *token_center)
     token_center->next->infile->value = malloc(len_value2 + 1);
     path_cpy(token_center->next->infile->value, value2);
     token_center->next->infile->next = NULL;
+    //node 2.1
+    token_center->next->infile->next = malloc(sizeof(t_token_node));
+    token_center->next->infile->next->type = malloc(len_type + 1);
+    path_cpy(token_center->next->infile->next->type, type);
+    token_center->next->infile->next->value = malloc(len_value + 1);
+    path_cpy(token_center->next->infile->next->value, "i3");
+    token_center->next->infile->next->next = NULL;
     return (0);
 }
 

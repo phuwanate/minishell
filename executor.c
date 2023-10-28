@@ -8,17 +8,19 @@ int check_infile(t_token_node *curr_token, t_data *data)
     while (curr_token != NULL)
     {
         len_infile = ft_strlen(curr_token->type);
-        // dprintf(1,"child %d { ", i);
         if(ft_strncmp(curr_token->type, "<", len_infile) == 0)
         {
             *data->fd_in = open(curr_token->value, O_RDONLY);
-            // dprintf(1,"type [%s] : value [%s] }\n", curr_token->type, curr_token->value);//open infile
         }
         else if(ft_strncmp(curr_token->type, "<<", len_infile) == 0)
-        {}    // dprintf(1,"type [%s] : value [%s] }\n", curr_token->type, curr_token->value);//open heredoc
+        {
+            dprintf(1,"type [%s] : value [%s] }\n", curr_token->type, curr_token->value);//open heredoc
+        }
         curr_token = curr_token->next;
         i++;
     }
+    dup2(*data->fd_in, STDIN_FILENO);
+    close(*data->fd_in);
     return (0);
 }
 
@@ -30,16 +32,13 @@ int check_outfile(t_token_node *curr_token, t_data *data)
     while (curr_token != NULL)
     {
         len_outfile = ft_strlen(curr_token->type);
-        // dprintf(1,"child %d { ", i);
         if(ft_strncmp(curr_token->type, ">", len_outfile) == 0)
         {
             *data->fd_out = open(curr_token->value, O_TRUNC | O_WRONLY | O_CREAT, 0644);
-            // dprintf(1,"type [%s] : value [%s] --> truncate }\n", curr_token->type, curr_token->value);
         }
         else if(ft_strncmp(curr_token->type, ">>", len_outfile) == 0)
         {   
             *data->fd_out = open(curr_token->value, O_APPEND | O_WRONLY | O_CREAT, 0644);
-            // dprintf(1,"type [%s] : value [%s] --> append }\n", curr_token->type, curr_token->value);
         }
         curr_token = curr_token->next;
     }
@@ -68,12 +67,12 @@ int executor(t_data *data)
         {
             if(curr_list->infile != NULL)
             {
-                check_infile(curr_list->infile, data); // if found infile go open
-                dup2(*data->fd_in, STDIN_FILENO);
-                close(*data->fd_in);
+                check_infile(curr_list->infile, data);
             }
             if(curr_list->outfile != NULL)
+            {
                 check_outfile(curr_list->outfile, data);
+            }
             else if(curr_list->next != NULL)  
             {
                 if (dup2(fd_pipe[1], STDOUT_FILENO) == - 1)
