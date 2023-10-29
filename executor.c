@@ -10,7 +10,9 @@ int check_infile(t_token_node *curr_token, t_data *data)
         len_infile = ft_strlen(curr_token->type);
         if(ft_strncmp(curr_token->type, "<", len_infile) == 0)
         {
-            *data->fd_in = open(curr_token->value, O_RDONLY);
+            data->fd_in = open(curr_token->value, O_RDONLY);
+            if (data->fd_in == -1)
+                file_error(curr_token->value);
         }
         else if(ft_strncmp(curr_token->type, "<<", len_infile) == 0)
         {
@@ -19,8 +21,8 @@ int check_infile(t_token_node *curr_token, t_data *data)
         curr_token = curr_token->next;
         i++;
     }
-    dup2(*data->fd_in, STDIN_FILENO);
-    close(*data->fd_in);
+    dup2(data->fd_in, STDIN_FILENO);
+    close(data->fd_in);
     return (0);
 }
 
@@ -34,17 +36,16 @@ int check_outfile(t_token_node *curr_token, t_data *data)
         len_outfile = ft_strlen(curr_token->type);
         if(ft_strncmp(curr_token->type, ">", len_outfile) == 0)
         {
-            *data->fd_out = open(curr_token->value, O_TRUNC | O_WRONLY | O_CREAT, 0644);
+            data->fd_out = open(curr_token->value, O_TRUNC | O_WRONLY | O_CREAT, 0644);
         }
         else if(ft_strncmp(curr_token->type, ">>", len_outfile) == 0)
         {   
-            *data->fd_out = open(curr_token->value, O_APPEND | O_WRONLY | O_CREAT, 0644);
+            data->fd_out = open(curr_token->value, O_APPEND | O_WRONLY | O_CREAT, 0644);
         }
         curr_token = curr_token->next;
     }
-    if(dup2(*data->fd_out, STDOUT_FILENO) == -1)
-        dprintf(2, "infile error\n");
-    close(*data->fd_out);
+    dup2(data->fd_out, STDOUT_FILENO);
+    close(data->fd_out);
     return (0);
 }
 
@@ -55,6 +56,7 @@ int executor(t_data *data)
     t_list_node *curr_list;
 
     i = 0;
+    //copy original I/O file.
     data->stdin_copy = dup(STDIN_FILENO);
     data->stdout_copy = dup(STDOUT_FILENO);
     curr_list = (*data->list_head);
@@ -80,6 +82,7 @@ int executor(t_data *data)
                 close(fd_pipe[0]);
                 close(fd_pipe[1]);           
             }
+            // dprintf(2, "%s %s\n", curr_list->cmd[0], curr_list->cmd[1]);
             execve(curr_list->cmd[0], curr_list->cmd, data->env);
         }
         else if(curr_list->next != NULL)
@@ -97,7 +100,8 @@ int executor(t_data *data)
         waitpid(data->pid[i++], &data->exit_status, WUNTRACED);
     dup2(data->stdin_copy, STDIN_FILENO);
     dup2(data->stdout_copy, STDOUT_FILENO);
-    return (WEXITSTATUS(data->exit_status));
+    data->exit_status = WEXITSTATUS(data->exit_status);
+    return (data->exit_status);
 }
 
 int main(int ac, char *av[], char *env[])
@@ -107,5 +111,6 @@ int main(int ac, char *av[], char *env[])
     data.env = env;
     make_token_center(&data);   
     executor(&data);
+    return (data.exit_status);
 }
     

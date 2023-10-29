@@ -4,6 +4,8 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include "libft/libft.h"
+#include <errno.h>
+#include <string.h>
 
 //token link list
 typedef struct s_token_node
@@ -31,15 +33,16 @@ typedef struct s_data
     int                 errnum;
     t_list_node         **list_head;
     int                 *pid; //first
-    int                 *fd_in; //first
-    int                 *fd_out; //first
+    int                 fd_in; //first
+    int                 fd_out; //first
     int                 num_child;
     int                 exit_status;
 }   t_data;
 
 
 void	path_cpy(char *dst, const char *src);
-int make_infile(t_list_node *token_center);
-int make_outfile(t_list_node *token_center);
-int make_cmd(t_list_node *token_center);
-int make_token_center(t_data *data);
+int     make_infile(t_list_node *token_center);
+int     make_outfile(t_list_node *token_center);
+int     make_cmd(t_list_node *token_center);
+int     make_token_center(t_data *data);
+void	file_error(char *file);
