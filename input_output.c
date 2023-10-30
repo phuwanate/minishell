@@ -90,7 +90,7 @@ int check_outfile(t_token_node *curr_token, t_data *data)
 int check_here_doc(t_list_node *curr_list, t_data *data)
 {
     t_token_node *curr_token;
-    curr_token = curr_list->infile;
+
     while (curr_list != NULL)
     {
         curr_token = curr_list->infile;
