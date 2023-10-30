@@ -6,12 +6,14 @@
 #include "libft/libft.h"
 #include <errno.h>
 #include <string.h>
+#include "get_next_line_bonus.h"
 
 //token link list
 typedef struct s_token_node
 {
     char                *type;
     char                *value;
+    int                 here_doc_fd;
     struct s_token_node *next;
 } t_token_node;
 
@@ -46,3 +48,9 @@ int     make_outfile(t_list_node *token_center);
 int     make_cmd(t_list_node *token_center);
 int     make_token_center(t_data *data);
 void	file_error(char *file);
+int     end_doc(char *hay_stack, char *needle);
+int     check_infile(t_token_node *curr_token, t_data *data);
+int     check_outfile(t_token_node *curr_token, t_data *data);
+char	*get_next_line(int fd);
+int     check_here_doc(t_list_node *curr_node, t_data *data);
+int     ft_strcmp(const char *s1, const char *s2);
