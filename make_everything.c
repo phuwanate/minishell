@@ -3,9 +3,9 @@
 int make_infile(t_list_node *token_center)
 {
     char *type = "<<";
-    char *type2 = "<<";
-    char *value = "i1";
-    char *value2 = "l1";
+    char *type2 = "<";
+    char *value = "l1";
+    char *value2 = "i1";
     size_t len_type = ft_strlen(type);
     size_t len_type2 = ft_strlen(type2);
     size_t len_value = ft_strlen(value);
@@ -17,13 +17,13 @@ int make_infile(t_list_node *token_center)
     token_center->infile->value = malloc(len_value + 1);
     path_cpy(token_center->infile->value, value);
     token_center->infile->next = NULL;
-    // //node 2
-    // token_center->next->infile = malloc(sizeof(t_token_node));
-    // token_center->next->infile->type = malloc(len_type2 + 1);
-    // path_cpy(token_center->next->infile->type, type2);
-    // token_center->next->infile->value = malloc(len_value2 + 1);
-    // path_cpy(token_center->next->infile->value, value2);
-    // token_center->next->infile->next = NULL;
+    //node 2
+    token_center->next->infile = malloc(sizeof(t_token_node));
+    token_center->next->infile->type = malloc(len_type2 + 1);
+    path_cpy(token_center->next->infile->type, type2);
+    token_center->next->infile->value = malloc(len_value2 + 1);
+    path_cpy(token_center->next->infile->value, value2);
+    token_center->next->infile->next = NULL;
     // //node 2.1
     // token_center->next->infile->next = malloc(sizeof(t_token_node));
     // token_center->next->infile->next->type = malloc(len_type2 + 1);
@@ -84,15 +84,15 @@ int make_cmd(t_list_node *token_center)
     int     len_cmd = ft_strlen(cmd);
     int     len_cmd2 = ft_strlen(cmd2);
     //node 1
-    token_center->cmd = malloc(sizeof(char *) * 3); // for {"ls", "-l", NULL};
-    token_center->cmd[0] = malloc((sizeof(char) * (len_cmd + 1))); // for "/bin/ls"
+    token_center->cmd = malloc(sizeof(char *) * 3);
+    token_center->cmd[0] = malloc((sizeof(char) * (len_cmd + 1)));
     token_center->cmd[1] = NULL;
     // token_center->cmd[1] = malloc((sizeof(char) * (1 + 1))); // for "-l"
     path_cpy(token_center->cmd[0], "/bin/cat");
     // path_cpy(token_center->cmd[1], "-l");
     //node 2
-    token_center->next->cmd = malloc(sizeof(char *) * 3); // for {"ls", "-l", NULL};
-    token_center->next->cmd[0] = malloc((sizeof(char) * (len_cmd2 + 1))); // for "/bin/ls"
+    token_center->next->cmd = malloc(sizeof(char *) * 3);
+    token_center->next->cmd[0] = malloc((sizeof(char) * (len_cmd2 + 1)));
     // token_center->next->cmd[1] = NULL;
     token_center->next->cmd[1] = malloc((sizeof(char) * (1))); // for "-l"
     path_cpy(token_center->next->cmd[0], cmd2);

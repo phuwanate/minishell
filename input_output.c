@@ -6,13 +6,11 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 14:22:20 by plertsir          #+#    #+#             */
-/*   Updated: 2023/10/30 16:51:50 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/10/30 17:04:29 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "first.h"
-
-
 
 int	open_heredoc(t_token_node *curr_token, t_data *data)
 {
@@ -22,7 +20,7 @@ int	open_heredoc(t_token_node *curr_token, t_data *data)
     int     pipe_fd[2];
 	int		fd;
     
-    if(pipe(pipe_fd) == -1)
+    if (pipe(pipe_fd) == -1)
         dprintf(2, "Pipe here_doc fail\n");
 	while (1)
 	{
@@ -35,7 +33,6 @@ int	open_heredoc(t_token_node *curr_token, t_data *data)
             break ;
 		}
         ft_putstr_fd(in_doc, pipe_fd[1]);
-        // write(pipe_fd[1], "\n", 1);
 		free(in_doc);
 	}
     close(pipe_fd[1]);
@@ -75,11 +72,11 @@ int check_outfile(t_token_node *curr_token, t_data *data)
         curr_token = curr_token->next;
     }
     len_outfile = ft_strlen(curr_token->type);
-    if(ft_strncmp(curr_token->type, ">", len_outfile) == 0)
+    if (ft_strncmp(curr_token->type, ">", len_outfile) == 0)
     {
         data->fd_out = open(curr_token->value, O_TRUNC | O_WRONLY | O_CREAT, 0644);
     }
-    else if(ft_strncmp(curr_token->type, ">>", len_outfile) == 0)
+    else if (ft_strncmp(curr_token->type, ">>", len_outfile) == 0)
     {   
         data->fd_out = open(curr_token->value, O_APPEND | O_WRONLY | O_CREAT, 0644);
     }
