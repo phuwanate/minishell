@@ -1,3 +1,7 @@
+#ifndef FIRST_H
+# define FIRST_H
+
+
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -8,9 +12,26 @@
 #include <string.h>
 #include "get_next_line_bonus.h"
 
+# define FALSE 0
+# define TRUE  1
+
+typedef enum e_token_mark
+{
+    m_undefined,
+    m_heredoc,
+    m_out_append,
+    m_out_trunc,
+    m_infile,
+    m_cmd,
+    m_arg,
+    m_pipe
+}            t_token_mark;
+
 //token link list
 typedef struct s_token_node
 {
+
+    t_token_mark        mark;
     char                *type;
     char                *value;
     int                 here_doc_fd;
@@ -33,12 +54,13 @@ typedef struct s_data
     int                 stdout_copy;
     char                **env;
     int                 errnum;
-    t_list_node         **list_head;
+    t_list_node         *list_head;
     int                 *pid; //first
     int                 fd_in; //first
     int                 fd_out; //first
     int                 num_child;
     int                 exit_status;
+    int                 *fd_pipe;
 }   t_data;
 
 
@@ -54,3 +76,5 @@ int     check_outfile(t_token_node *curr_token, t_data *data);
 char	*get_next_line(int fd);
 int     check_here_doc(t_list_node *curr_node, t_data *data);
 int     ft_strcmp(const char *s1, const char *s2);
+
+#endif
