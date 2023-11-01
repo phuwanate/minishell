@@ -5,7 +5,9 @@ FLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 LIBFT = $(LIBFT_DIRECTORY)libft.a
 LIBFT_DIRECTORY = ./libft/
 
-READLINE = /usr/local/opt/readline
+# READLINE = /usr/local/opt/readline
+
+READLINE = /opt/homebrew/Cellar/readline/8.2.1/
 
 SRC = executor.c input_error.c utils.c\
 		input_output.c get_next_line_bonus.c get_next_line_utils_bonus.c\

@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:05:57 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/01 15:45:57 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/01 22:46:51 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	free_everything(t_data *data);
 void	rl_clear_history(void);
 void	rl_replace_line(const char *text, int clear_undo);
 int		executor(t_data *data);
-void	loop_exe_cmd(t_data *data, t_list_node *curr_list, int *pipe_w, \
+void	go_exe_cmd(t_data *data, t_list_node *curr_list, int *pipe_w, \
 		int *pipe_r);
 
 void	check_infile_outfile(t_list_node *curr_list, t_data *data, \

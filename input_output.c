@@ -6,36 +6,11 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 14:22:20 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/01 15:39:38 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/02 00:11:44 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	open_heredoc(t_token_node *curr_token)
-{
-	char	*in_doc;
-	int		pipe_fd[2];
-
-	if (pipe(pipe_fd) == -1)
-		dprintf(2, "Pipe here_doc fail\n");
-	while (1)
-	{
-		write(STDOUT_FILENO, "> ", 2);
-		in_doc = get_next_line(STDIN_FILENO);
-		if (end_doc(in_doc, curr_token->value) == 0)
-		{
-			free(in_doc);
-			in_doc = NULL;
-			break ;
-		}
-		ft_putstr_fd(in_doc, pipe_fd[1]);
-		free(in_doc);
-		in_doc = NULL;
-	}
-	close(pipe_fd[1]);
-	return (pipe_fd[0]);
-}
 
 int	check_infile(t_token_node *curr_token, t_data *data)
 {
@@ -75,6 +50,31 @@ int	check_outfile(t_token_node *curr_token, t_data *data)
 	return (0);
 }
 
+int	open_heredoc(t_token_node *curr_token)
+{
+	char	*in_doc;
+	int		pipe_fd[2];
+
+	if (pipe(pipe_fd) == -1)
+		return(ft_putstr_fd("Pipe here_doc fail\n", 2), -1);
+	while (1)
+	{
+		write(STDOUT_FILENO, "> ", 2);
+		in_doc = get_next_line(STDIN_FILENO);
+		if (end_doc(in_doc, curr_token->value) == 0)
+		{
+			free(in_doc);
+			in_doc = NULL;
+			break ;
+		}
+		ft_putstr_fd(in_doc, pipe_fd[1]);
+		free(in_doc);
+		in_doc = NULL;
+	}
+	close(pipe_fd[1]);
+	return (pipe_fd[0]);
+}
+
 int	check_here_doc(t_list_node *curr_list)
 {
 	t_token_node	*curr_token;
@@ -85,10 +85,14 @@ int	check_here_doc(t_list_node *curr_list)
 		while (curr_token != NULL)
 		{
 			if (curr_token->mark == m_heredoc)
+			{
 				curr_token->here_doc_fd = open_heredoc(curr_token);
+				if (curr_token->here_doc_fd == -1)
+					return (FALSE);
+			}
 			curr_token = curr_token->next;
 		}
 		curr_list = curr_list->next;
 	}
-	return (0);
+	return (TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 09:48:33 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/01 15:33:01 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/01 20:43:31 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	free_everything(t_data *data)
 	// int				i;
 
 	tmp = NULL;
-	curr_list = data->list_head;
+	curr_list = data->grouped_token;
 	while (curr_list != NULL)
 	{
 		if (curr_list->infile != NULL)
