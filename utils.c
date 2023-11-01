@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 14:24:24 by plertsir          #+#    #+#             */
-/*   Updated: 2023/10/30 13:22:54 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/01 09:47:34 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 	size_t			i;
 	unsigned char	*ptr1;
 	unsigned char	*ptr2;
+
 	ptr1 = (unsigned char *)s1;
 	ptr2 = (unsigned char *)s2;
 	i = 0;

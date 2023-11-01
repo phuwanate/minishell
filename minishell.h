@@ -1,30 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   first.h                                            :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/31 16:14:40 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/01 14:33:24 by plertsir         ###   ########.fr       */
+/*   Created: 2023/11/01 14:05:57 by plertsir          #+#    #+#             */
+/*   Updated: 2023/11/01 15:45:57 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FIRST_H
-# define FIRST_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-# include <stdlib.h>
-# include <unistd.h>
 # include <stdio.h>
-# include <sys/wait.h>
+# include <limits.h>
+# include <signal.h>
 # include <fcntl.h>
-# include "libft/libft.h"
-# include <errno.h>
+# include <sys/errno.h>
+# include <sys/wait.h>
 # include <string.h>
-# include "get_next_line_bonus.h"
+# include "libft/libft.h"
+# include <readline/readline.h>
+# include <readline/history.h>
 
 # define FALSE 0
 # define TRUE  1
+
+typedef struct sigaction	t_sigaction;
 
 typedef enum e_token_mark
 {
@@ -35,9 +38,8 @@ typedef enum e_token_mark
 	m_infile,
 	m_cmd,
 	m_pipe
-}	t_token_mark;
+}			t_token_mark;
 
-//token link list
 typedef struct s_token_node
 {
 	t_token_mark		mark;
@@ -45,34 +47,52 @@ typedef struct s_token_node
 	char				*value;
 	int					here_doc_fd;
 	struct s_token_node	*next;
-}	t_token_node;
+}						t_token_node;
 
-//token center
+typedef struct s_token_ptr
+{
+	t_token_node		*head;
+	t_token_node		*tail;
+}						t_token_ptr;
+
+typedef struct s_group_ptr
+{
+	t_token_ptr		infile;
+	t_token_ptr		outfile;
+	t_token_ptr		cmd;
+}						t_group_ptr;
+
 typedef struct s_list_node
 {
+	int					is_pipe;
 	t_token_node		*infile;
 	t_token_node		*outfile;
 	t_token_node		*cmd;
 	char				**cmd_all;
 	struct s_list_node	*next;
-}	t_list_node;
+}						t_list_node;
 
-//data center
+
 typedef struct s_data
 {
-	char				**env;
 	int					errnum;
+	char				**env;
+	size_t				env_row_max;
+	t_token_ptr			unorganized_token;
+	t_list_node			*grouped_token;
 	int					stdin_copy;
 	int					stdout_copy;
-	t_list_node			*list_head;
 	int					*pid;
 	int					fd_in;
 	int					fd_out;
 	int					num_child;
 	int					exit_status;
 	int					index;
-}	t_data;
+}						t_data;
 
+int	g_signal;
+
+//First function
 void	path_cpy(char *dst, const char *src);
 int		make_infile(t_list_node *token_center);
 int		make_outfile(t_list_node *token_center);
@@ -86,5 +106,13 @@ char	*get_next_line(int fd);
 int		check_here_doc(t_list_node *curr_list);
 int		ft_strcmp(const char *s1, const char *s2);
 void	free_everything(t_data *data);
+void	rl_clear_history(void);
+void	rl_replace_line(const char *text, int clear_undo);
+int		executor(t_data *data);
+void	loop_exe_cmd(t_data *data, t_list_node *curr_list, int *pipe_w, \
+		int *pipe_r);
+
+void	check_infile_outfile(t_list_node *curr_list, t_data *data, \
+		int *pipe_w, int *pipe_r);
 
 #endif

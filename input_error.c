@@ -6,11 +6,11 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 11:48:09 by plertsir          #+#    #+#             */
-/*   Updated: 2023/10/29 11:48:57 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/01 15:32:56 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "first.h"
+#include "minishell.h"
 
 void	file_error(char *file)
 {
