@@ -6,14 +6,15 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 11:48:09 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/02 12:13:54 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:23:04 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	file_error(char *file)
+void	file_error(t_data *data, char *file)
 {
+	(void)data;
 	ft_putstr_fd(file, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putendl_fd(strerror(errno), 2);

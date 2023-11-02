@@ -6,13 +6,14 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:05:57 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/02 12:26:20 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:58:57 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <unistd.h>
 # include <stdio.h>
 # include <limits.h>
 # include <signal.h>
@@ -62,7 +63,8 @@ typedef struct s_group_ptr
 	t_token_ptr		outfile;
 	t_token_ptr		cmd;
 }						t_group_ptr;
-
+//token_to_organize
+//make_list_node
 typedef struct s_list_node
 {
 	int					is_pipe;
@@ -86,12 +88,13 @@ typedef struct s_data
 	int					fd_in;
 	int					fd_out;
 	int					num_child;
-	int					exit_status;
 	int					index;
 	int					len_path;
+	int					builtin_parent;
 }						t_data;
 
 //First function
+int		first_execute(t_data *data);
 void	path_cpy(char *dst, const char *src);
 int		make_infile(t_list_node *token_center);
 int		make_outfile(t_list_node *token_center);
@@ -106,7 +109,6 @@ int		ft_strcmp(const char *s1, const char *s2);
 void	free_everything(t_data *data);
 void	rl_clear_history(void);
 void	rl_replace_line(const char *text, int clear_undo);
-int		executor(t_data *data);
 void	check_everything(t_list_node *curr_list, t_data *data, \
 		int *pipe_w, int *pipe_r);
 
@@ -118,8 +120,10 @@ void	get_path(t_list_node *curr_list, t_data *data);
 void	path_error(t_data *data, t_token_node *curr_token);
 void	go_exec(t_data *data, t_list_node *curr_list);
 //Error executor
-void	file_error(char *file);
+void	file_error(t_data *data, char *file);
 void	path_error(t_data *data, t_token_node *curr_token);
 void	cmd_error(t_data *data, t_token_node *curr_token);
+//Built in
+int		check_builtin(t_data *data, t_list_node *curr_list);
 
 #endif

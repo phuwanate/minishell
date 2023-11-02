@@ -24,7 +24,6 @@ void print_token_node(t_token_node *node)
 	if (node) 
 	{
 		printf("Mark: %u\n", node->mark); // show in index
-		printf("Type: %s\n", node->type); 
 		printf("Value: %s\n", node->value); 
 	} 
 	else
@@ -54,7 +53,7 @@ void print_group_list(t_list_node *head)
 	int i = 1;
 	while (current != NULL) 
 	{
-		printf("node number: %d\n", i);
+		printf("\nnode number: %d\n", i);
 		printf("is_pipe: %d\n", current->is_pipe);
 
 		// Print infile
@@ -129,7 +128,7 @@ void print_group_list(t_list_node *head)
 
 void	free_mns(t_data *data)
 {
-	(void)data;
+	(void)(data);
 	rl_clear_history();
 }
 
@@ -163,6 +162,20 @@ void	free_token_list(t_token_node *token_ptr)
 	}
 }
 
+void	free_group_list (t_list_node *list_head)
+{
+	t_list_node	*tmp_head;
+	
+	while (list_head)
+	{
+		tmp_head = list_head;
+		list_head = list_head->next;
+		free_token_list(tmp_head->cmd);
+		free_token_list(tmp_head->infile);
+		free_token_list(tmp_head->outfile);
+		free(tmp_head);
+	}
+}
 
 /////////////////////////////////////////////////////////////////////////////////
 
@@ -176,7 +189,6 @@ t_token_node	*token_node_create (t_token_ptr *ptr, t_token_mark mark)
 	if (!new)
 		return (NULL);
 	new->mark = mark;
-	new->type = 0;
 	new->value = 0;
 	new->next = 0;
 	if (ptr->head)
@@ -448,7 +460,7 @@ void	token_to_organize(t_data *data, t_token_ptr *input)
 	data->grouped_token = dst_head.next;
 
 	
-	// 	// **data->grouped_token: NOT CORRECT **
+	// 	// **data->grouped_token: CORRECT **
 	// printf("\nGROUP_TOKEN output:\n"); // ** DEBUG ********************************************************************
 	// print_group_list(data->grouped_token); // ** DEBUG ******************************************************************
 
@@ -471,8 +483,6 @@ void	token_to_organize(t_data *data, t_token_ptr *input)
 	// 	exit (0);
 	// }
 }
-
-
 
 ////////////////////////////input_to_token_utils2.c////////////////////////////////////
 
@@ -575,6 +585,129 @@ void	split_infile(t_data *data, t_token_ptr *tmp_ptr, t_token_node *src_head)
 		main_cptr = match_cptr;
 	}
 }
+
+////////////////////////////input_to_token_utils3.c////////////////////////////////////
+
+char	*ft_strjoin_free(char *src, char *dst)
+{
+	char	*res;
+	size_t	count;
+	size_t	i;
+	size_t	j;
+
+	if (!dst && !src)
+		return (NULL);
+	if (!dst || !*dst)
+		return (src);
+	else if (!src || !*src)
+		return (dst);
+	count = ft_strlen(src) + ft_strlen(dst);
+	res = (char *)malloc(sizeof(char) * (count + 1));
+	if (!res)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while(src[j])
+		res[i++] = src[j++];
+	j = 0;
+	while (dst[j])
+		res[i++] = dst[j++];
+	res[i] = '\0';
+	return (free(src), free(dst), res);
+}
+size_t	index_of_c(const char *s, int c)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i] && s[i] != c)
+		i++;
+	return (i);
+}
+char	*env_key(t_data *data, char *key)
+{
+	size_t	i;
+	size_t	str_len;
+	size_t	key_len;
+	char	**env = data->env;
+	
+	key_len = ft_strlen(key);
+	i = 0;
+	while (env[i])
+	{
+		str_len = index_of_c(env[i], '=');
+		if (key_len > str_len)
+			str_len = key_len;
+		if (ft_strncmp(key, env[i], str_len) == 0)
+			return (ft_strchr(env[i], '=') + 1);
+		i++;
+	}
+	return (NULL);
+}
+
+void	env_replacement(char **env_replace, char **next_nonchar, char **match_cptr,
+		t_data *data)
+{
+	char	*str;
+	char	*env_c;
+	char	*tmp;
+	char	*get_env;
+
+	str = (*match_cptr) + 1;
+	if (*str == '?')
+	{
+		str++;
+		*env_replace = ft_strjoin_free((*env_replace), ft_itoa(data->errnum));
+		*next_nonchar = str;
+		return ;
+	}
+	while (*str && (ft_isalnum(*str) || *str == '_'))
+		str++;
+	if (str > (*match_cptr) + 1)
+	{
+		env_c = ft_substr(*match_cptr, 1, str - *match_cptr - 1);
+		tmp = *env_replace;
+		get_env = env_key(data, env_c);
+		if (get_env)
+		{
+			*env_replace = ft_strjoin(tmp, get_env);
+			free(tmp);
+		}
+		free(env_c);
+	}
+	else
+		*env_replace = ft_strjoin_free(*env_replace, ft_strdup("$"));
+	*next_nonchar = str;
+}
+
+void	split_dollar_sign(t_data *data, t_token_ptr *dst_ptr, t_token_node *src_head)
+{
+	char	*main_cptr;
+	char	*match_cptr;
+	char	*next_nonchar;
+	char	*env_replace;
+	size_t	len;
+
+	main_cptr = src_head->value;
+	match_cptr = main_cptr;
+	env_replace = ft_strdup("");
+	while (1)
+	{
+		match_cptr = match_outside_qoute(match_cptr, "$", 1);
+		len = match_cptr - main_cptr;
+		if (len)
+			env_replace = ft_strjoin(env_replace, ft_substr(main_cptr, 0, len));
+		if (*match_cptr)
+			env_replacement(&env_replace, &next_nonchar, &match_cptr, data);
+		if (!*match_cptr)
+			break ;
+		match_cptr = next_nonchar;
+		main_cptr = match_cptr;
+	}
+	token_node_create(dst_ptr, src_head->mark)->value = env_replace;
+}
+
+
 
 ////////////////////////////input_to_token_utils1.c////////////////////////////////////
 
@@ -726,7 +859,7 @@ void	input_to_token(t_data *data, char *input)
 	token_split (data, &tmp2, &tmp1, split_out_trunc);
 	token_split (data, &tmp1, &tmp2, split_infile);
 	token_split (data, &tmp2, &tmp1, split_pipe);
-	// token_split (data, &tmp1, &tmp2, split_dollar_sign); ** not finish **
+	token_split (data, &tmp1, &tmp2, split_dollar_sign); //** not finish **
 	// token_split (data, &tmp2, &tmp1, split_tilde_symbol); ** not finish **
 	token_split (data, &tmp1, &tmp2, split_quote);
 	data->unorganized_token.head = tmp2.head;
@@ -803,45 +936,24 @@ void	mns_init (t_data *data, char **envp)
 	data->env_row_max = 0;
 	data->unorganized_token.head = 0;
 	data->unorganized_token.tail = 0;
-	// data->organized_token.head = 0;
-	// data->organized_token.tail = 0;
 	data->grouped_token = 0;
+	data->path_exec = 0;
+	data->stdin_copy = 0;
+	data->stdout_copy = 0;
+	data->pid = 0;
+	data->fd_in = 0;
+	data->fd_out = 0;
 	data->num_child = 0;
+	data->index = 0;
 	data->len_path = 0;
+	data->builtin_parent = 0;
 
-	signal_init();
+	signal_init ();
 	env_init(data, envp);
 }
 
 ////////////////////////////minishell.c////////////////////////////////////
 
-char	*ft_strjoin_free(char *src, char *dst)
-{
-	char	*res;
-	size_t	count;
-	size_t	i;
-	size_t	j;
-
-	if (!dst && !src)
-		return (NULL);
-	if (!dst || !*dst)
-		return (src);
-	else if (!src || !*src)
-		return (dst);
-	count = ft_strlen(src) + ft_strlen(dst);
-	res = (char *)malloc(sizeof(char) * (count + 1));
-	if (!res)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while(src[j])
-		res[i++] = src[j++];
-	j = 0;
-	while (dst[j])
-		res[i++] = dst[j++];
-	res[i] = '\0';
-	return (free(src), free(dst), res);
-}
 
 static char	*input_msg_init (t_data *data)
 {
@@ -877,12 +989,13 @@ static int	main_while (t_data *data)
 	}
 	add_history(input);
 	input_to_token(data, input);
+	//err_check(data);//
 	token_to_organize(data, &data->unorganized_token);
 
-	// ** output: NOT CORRECT **
+	// ** output: CORRECT **
 
 	// printf("\noutput:\n"); // ** DEBUG ********************************************************************
-	// print_token_node(data->organized_token.head); // ** DEBUG ********************************************************************
+	// print_group_list(data->grouped_token); // ** DEBUG ********************************************************************
 
 	return(0);
 }
@@ -892,16 +1005,14 @@ void	free_cmd_history(t_data *data)
 	if(data->unorganized_token.head)
 	{
 		free_token_list(data->unorganized_token.head);
-		data->unorganized_token.head = NULL;
-		data->unorganized_token.tail = NULL;
+		data->unorganized_token.head = 0;
+		data->unorganized_token.tail = 0;
 	}
-	// if(data->organized_token.head)
-	// {
-	// 	free_token_list(data->organized_token.head);
-	// 	data->organized_token.head = NULL;
-	// 	data->organized_token.tail = NULL;
-	// }
-	//need to free group_list
+	if(data->grouped_token)
+	{
+		free_group_list(data->grouped_token);
+		data->grouped_token = 0;
+	}
 }
 
 int main(int argc, char **argv, char **envp) 
@@ -917,10 +1028,12 @@ int main(int argc, char **argv, char **envp)
 		if(main_while(&data))
 			break ;
 		g_signal = 1;
+
 		// **data->grouped_token: CORRECT **
-		// printf("\nGROUP_TOKEN output:\n"); // ** DEBUG ********************************************************************
-		// print_group_list(data.grouped_token); // ** DEBUG ******************************************************************
-		executor(&data);
+		printf("\nGROUP_TOKEN output:\n"); // ** DEBUG ********************************************************************
+		print_group_list(data.grouped_token); // ** DEBUG ******************************************************************
+
+		// first_execute(&data);
 		g_signal = 0;
 		free_cmd_history(&data);
 	}

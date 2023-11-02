@@ -11,7 +11,7 @@ READLINE = /usr/local/opt/readline
 
 SRC = execute.c first_main.c fork_child.c get_next_line_bonus.c\
 	get_next_line_utils_bonus.c get_path_cmd.c input_error.c\
-	input_output.c mns.c utils.c
+	input_output.c mns-12.c utils.c built_in.c
 #make_everything.c 
 OBJ_DIR = object/
 

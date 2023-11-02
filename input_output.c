@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 14:22:20 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/02 10:15:09 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/02 14:59:20 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,19 +55,19 @@ int	open_heredoc(t_token_node *curr_token)
 	char	*in_doc;
 	int		pipe_fd[2];
 
+	in_doc = NULL;
 	if (pipe(pipe_fd) == -1)
 		return (ft_putstr_fd("Pipe here_doc fail\n", 2), -1);
 	while (1)
 	{
-		write(STDOUT_FILENO, "> ", 2);
-		in_doc = get_next_line(STDIN_FILENO);
-		if (end_doc(in_doc, curr_token->value) == 0)
+		in_doc = readline("> ");
+		if (!in_doc || ft_strcmp(in_doc, curr_token->value) == 0)
 		{
 			free(in_doc);
 			in_doc = NULL;
 			break ;
 		}
-		ft_putstr_fd(in_doc, pipe_fd[1]);
+		ft_putendl_fd(in_doc, pipe_fd[1]);
 		free(in_doc);
 		in_doc = NULL;
 	}

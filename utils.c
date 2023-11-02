@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 14:24:24 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/02 12:15:07 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/02 14:55:46 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	end_doc(char *hay_stack, char *needle)
 	size_t	i;
 
 	i = 0;
-	while (1)
+	while (needle[i] && hay_stack[i])
 	{
 		if (hay_stack[i] != needle[i])
 			break ;
@@ -44,23 +44,23 @@ int	end_doc(char *hay_stack, char *needle)
 		return (0);
 }
 
-// int	ft_strcmp(const char *s1, const char *s2)
-// {
-// 	size_t			i;
-// 	unsigned char	*ptr1;
-// 	unsigned char	*ptr2;
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t			i;
+	unsigned char	*ptr1;
+	unsigned char	*ptr2;
 
-// 	ptr1 = (unsigned char *)s1;
-// 	ptr2 = (unsigned char *)s2;
-// 	i = 0;
-// 	while ((ptr1[i] || ptr2[i]))
-// 	{
-// 		if (ptr1[i] != ptr2[i])
-// 			return (ptr1[i] - ptr2[i]);
-// 		i++;
-// 	}
-// 	return (0);
-// }
+	ptr1 = (unsigned char *)s1;
+	ptr2 = (unsigned char *)s2;
+	i = 0;
+	while ((ptr1[i] || ptr2[i]))
+	{
+		if (ptr1[i] != ptr2[i])
+			return (ptr1[i] - ptr2[i]);
+		i++;
+	}
+	return (0);
+}
 
 int	find_path(const char *s1)
 {

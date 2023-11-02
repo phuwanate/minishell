@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 15:18:25 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/02 12:04:51 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/02 18:08:58 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,19 @@ void	wait_child(t_data *data)
 
 	i = 0;
 	while (i < data->num_child)
-		waitpid(data->pid[i++], &data->exit_status, WUNTRACED);
+		waitpid(data->pid[i++], &data->errnum, WUNTRACED);
 	dup2(data->stdin_copy, STDIN_FILENO);
 	dup2(data->stdout_copy, STDOUT_FILENO);
-	data->exit_status = WEXITSTATUS(data->exit_status);
+	if (data->builtin_parent != 1)
+		data->errnum = WEXITSTATUS(data->errnum);
 }
 
-int	executor(t_data *data)
+int	first_execute(t_data *data)
 {
 	int			fd_pipe[2];
 	t_list_node	*curr_list;
 
+	data->builtin_parent = 0;
 	curr_list = data->grouped_token;
 	data->index = 0;
 	if (prep_before_fork(data, curr_list) == FALSE)
