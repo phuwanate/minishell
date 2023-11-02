@@ -861,9 +861,9 @@ void	input_to_token(t_data *data, char *input)
 	token_split (data, &tmp2, &tmp1, split_pipe);
 	token_split (data, &tmp1, &tmp2, split_dollar_sign); //** not finish **
 	// token_split (data, &tmp2, &tmp1, split_tilde_symbol); ** not finish **
-	token_split (data, &tmp1, &tmp2, split_quote);
-	data->unorganized_token.head = tmp2.head;
-	data->unorganized_token.tail = tmp2.tail;
+	token_split (data, &tmp2, &tmp1, split_quote);
+	data->unorganized_token.head = tmp1.head;
+	data->unorganized_token.tail = tmp1.tail;
 
 	// print_link_list(data->unorganized_token.head); // ** DEBUG **********************************************************************
 }
@@ -1030,10 +1030,10 @@ int main(int argc, char **argv, char **envp)
 		g_signal = 1;
 
 		// **data->grouped_token: CORRECT **
-		printf("\nGROUP_TOKEN output:\n"); // ** DEBUG ********************************************************************
-		print_group_list(data.grouped_token); // ** DEBUG ******************************************************************
+		// printf("\nGROUP_TOKEN output:\n"); // ** DEBUG ********************************************************************
+		// print_group_list(data.grouped_token); // ** DEBUG ******************************************************************
 
-		// first_execute(&data);
+		first_execute(&data);
 		g_signal = 0;
 		free_cmd_history(&data);
 	}
