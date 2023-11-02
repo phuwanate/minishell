@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 14:22:20 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/02 18:17:20 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/03 00:11:36 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ int	check_infile(t_token_node *curr_token, t_data *data)
 		}
 		if (curr_token->mark == m_heredoc)
 			data->fd_in = curr_token->here_doc_fd;
+		if (curr_token->next != NULL)
+			close(data->fd_in);
 		curr_token = curr_token->next;
+		
 	}
 	dup2(data->fd_in, STDIN_FILENO);
 	close(data->fd_in);
@@ -43,6 +46,8 @@ int	check_outfile(t_token_node *curr_token, t_data *data)
 			O_CREAT, 0644);
 		if (data->fd_out == -1)
 			file_error(data, curr_token->value);
+		if (curr_token->next != NULL)
+			close(data->fd_out);
 		curr_token = curr_token->next;
 	}
 	dup2(data->fd_out, STDOUT_FILENO);
