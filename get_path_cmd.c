@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:40:10 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/02 17:06:19 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/02 21:34:39 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,24 @@ static char	**split_path(t_data *data, char *path)
 	return (path_split);
 }
 
+int is_directory(const char *path) {
+    struct stat path_stat;
+    if(stat(path, &path_stat) != 0)
+		  return(0);
+	  return S_ISDIR(path_stat.st_mode);
+}
+
 static void	check_slash(t_data *data, t_list_node *curr_list)
 {
 	if (ft_strchr(curr_list->cmd->value, '/') != NULL)
 	{
+		if (is_directory(curr_list->cmd->value) == 1)
+		{
+			ft_putstr_fd(curr_list->cmd->value, 2);
+			ft_putstr_fd(": ", 2);
+			ft_putendl_fd(" is a directory", 2);
+			exit(126);
+		}
 		if (access(curr_list->cmd->value, X_OK) != -1)
 			go_exec(data, curr_list);
 		else if (errno == 13)

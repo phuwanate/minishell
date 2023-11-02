@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 15:18:25 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/02 18:17:28 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/02 23:29:08 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	first_execute(t_data *data)
 	t_list_node	*curr_list;
 
 	data->builtin_parent = 0;
+	data->child_born = 0;
 	curr_list = data->grouped_token;
 	data->index = 0;
 	if (prep_before_fork(data, curr_list) == FALSE)

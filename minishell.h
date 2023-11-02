@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:05:57 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/02 17:58:57 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/02 23:24:51 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <sys/errno.h>
 # include <sys/wait.h>
 # include <string.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include "libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -91,6 +93,7 @@ typedef struct s_data
 	int					index;
 	int					len_path;
 	int					builtin_parent;
+	int					child_born;
 }						t_data;
 
 //First function
@@ -124,6 +127,7 @@ void	file_error(t_data *data, char *file);
 void	path_error(t_data *data, t_token_node *curr_token);
 void	cmd_error(t_data *data, t_token_node *curr_token);
 //Built in
-int		check_builtin(t_data *data, t_list_node *curr_list);
+int		check_builtin_parent(t_data *data, t_list_node *curr_list);
+int		check_builtin_child(t_data *data, t_list_node *curr_list);
 
 #endif

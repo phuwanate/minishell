@@ -947,6 +947,7 @@ void	mns_init (t_data *data, char **envp)
 	data->index = 0;
 	data->len_path = 0;
 	data->builtin_parent = 0;
+	data->child_born = 0;
 
 	signal_init ();
 	env_init(data, envp);
