@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:05:57 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/01 22:46:51 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/02 12:26:20 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define TRUE  1
 
 typedef struct sigaction	t_sigaction;
+int							g_signal;
 
 typedef enum e_token_mark
 {
@@ -68,18 +69,17 @@ typedef struct s_list_node
 	t_token_node		*infile;
 	t_token_node		*outfile;
 	t_token_node		*cmd;
-	char				**cmd_all;
 	struct s_list_node	*next;
 }						t_list_node;
 
-
 typedef struct s_data
 {
-	int					errnum;
-	char				**env;
 	size_t				env_row_max;
 	t_token_ptr			unorganized_token;
 	t_list_node			*grouped_token;
+	char				**env;
+	char				*path_exec;
+	int					errnum;
 	int					stdin_copy;
 	int					stdout_copy;
 	int					*pid;
@@ -88,9 +88,8 @@ typedef struct s_data
 	int					num_child;
 	int					exit_status;
 	int					index;
+	int					len_path;
 }						t_data;
-
-int	g_signal;
 
 //First function
 void	path_cpy(char *dst, const char *src);
@@ -98,7 +97,6 @@ int		make_infile(t_list_node *token_center);
 int		make_outfile(t_list_node *token_center);
 int		make_cmd(t_list_node *token_center);
 int		make_token_center(t_data *data);
-void	file_error(char *file);
 int		end_doc(char *hay_stack, char *needle);
 int		check_infile(t_token_node *curr_token, t_data *data);
 int		check_outfile(t_token_node *curr_token, t_data *data);
@@ -109,10 +107,19 @@ void	free_everything(t_data *data);
 void	rl_clear_history(void);
 void	rl_replace_line(const char *text, int clear_undo);
 int		executor(t_data *data);
-void	go_exe_cmd(t_data *data, t_list_node *curr_list, int *pipe_w, \
+void	check_everything(t_list_node *curr_list, t_data *data, \
+		int *pipe_w, int *pipe_r);
+
+void	fork_child(t_data *data, t_list_node *curr_list, int *pipe_w, \
 		int *pipe_r);
 
-void	check_infile_outfile(t_list_node *curr_list, t_data *data, \
-		int *pipe_w, int *pipe_r);
+int		find_path(const char *s1);
+void	get_path(t_list_node *curr_list, t_data *data);
+void	path_error(t_data *data, t_token_node *curr_token);
+void	go_exec(t_data *data, t_list_node *curr_list);
+//Error executor
+void	file_error(char *file);
+void	path_error(t_data *data, t_token_node *curr_token);
+void	cmd_error(t_data *data, t_token_node *curr_token);
 
 #endif

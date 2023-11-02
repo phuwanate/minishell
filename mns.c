@@ -281,7 +281,6 @@ t_list_node	*make_list_node(t_group_ptr *group, int pipe)
 	new_node->infile = 0;
 	new_node->outfile = 0;
 	new_node->next = 0;
-	new_node->cmd_all = 0;
 	if(group->cmd.head)
 		new_node->cmd = group->cmd.head;
 		// new_node->cmd = move_token(&group->cmd, new_node->cmd);
@@ -426,7 +425,6 @@ void	token_to_organize(t_data *data, t_token_ptr *input)
 	dst_head.is_pipe = 0;
 	dst_head.outfile = 0;
 	dst_head.next = 0;
-	dst_head.cmd_all = 0;
 	while (input->head)
 	{
 		// ** input loop: CORRECT **
@@ -809,7 +807,7 @@ void	mns_init (t_data *data, char **envp)
 	// data->organized_token.tail = 0;
 	data->grouped_token = 0;
 	data->num_child = 0;
-
+	data->len_path = 0;
 
 	signal_init();
 	env_init(data, envp);

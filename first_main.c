@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor.c                                         :+:      :+:    :+:   */
+/*   first_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 15:18:25 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/02 00:12:17 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/02 12:04:51 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	prep_before_fork(t_data *data, t_list_node *curr_list)
 {
 	check_numchild(data);
 	data->pid = malloc(sizeof(int) * data->num_child);
-	if(!data->pid)
+	if (!data->pid)
 		return (FALSE);
 	data->stdin_copy = dup(STDIN_FILENO);
 	data->stdout_copy = dup(STDOUT_FILENO);
@@ -65,7 +65,7 @@ int	executor(t_data *data)
 	{
 		if (pipe(fd_pipe) == -1)
 			return (ft_putstr_fd("pipe error\n", 2), FALSE);
-		go_exe_cmd(data, curr_list, &fd_pipe[1], &fd_pipe[0]);
+		fork_child(data, curr_list, &fd_pipe[1], &fd_pipe[0]);
 		curr_list = curr_list->next;
 		data->index++;
 	}

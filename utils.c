@@ -6,11 +6,11 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 14:24:24 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/01 09:47:34 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/02 12:15:07 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "first.h"
+#include "minishell.h"
 
 void	path_cpy(char *dst, const char *src)
 {
@@ -44,20 +44,38 @@ int	end_doc(char *hay_stack, char *needle)
 		return (0);
 }
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	size_t			i;
-	unsigned char	*ptr1;
-	unsigned char	*ptr2;
+// int	ft_strcmp(const char *s1, const char *s2)
+// {
+// 	size_t			i;
+// 	unsigned char	*ptr1;
+// 	unsigned char	*ptr2;
 
-	ptr1 = (unsigned char *)s1;
-	ptr2 = (unsigned char *)s2;
+// 	ptr1 = (unsigned char *)s1;
+// 	ptr2 = (unsigned char *)s2;
+// 	i = 0;
+// 	while ((ptr1[i] || ptr2[i]))
+// 	{
+// 		if (ptr1[i] != ptr2[i])
+// 			return (ptr1[i] - ptr2[i]);
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
+int	find_path(const char *s1)
+{
+	char	*s2;
+	int		i;
+
+	s2 = "PATH=";
 	i = 0;
-	while ((ptr1[i] || ptr2[i]))
+	while (s2[i])
 	{
-		if (ptr1[i] != ptr2[i])
-			return (ptr1[i] - ptr2[i]);
+		if (s1[i] != s2[i])
+		{
+			return (0);
+		}
 		i++;
 	}
-	return (0);
+	return (1);
 }

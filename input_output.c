@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 14:22:20 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/02 00:11:44 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/02 10:15:09 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	open_heredoc(t_token_node *curr_token)
 	int		pipe_fd[2];
 
 	if (pipe(pipe_fd) == -1)
-		return(ft_putstr_fd("Pipe here_doc fail\n", 2), -1);
+		return (ft_putstr_fd("Pipe here_doc fail\n", 2), -1);
 	while (1)
 	{
 		write(STDOUT_FILENO, "> ", 2);
