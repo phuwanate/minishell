@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 15:18:25 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/02 23:29:08 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/03 09:46:34 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ void	wait_child(t_data *data)
 	i = 0;
 	while (i < data->num_child)
 		waitpid(data->pid[i++], &data->errnum, WUNTRACED);
+	i = 0;
+	free(data->pid);
+	data->pid = NULL;
 	dup2(data->stdin_copy, STDIN_FILENO);
 	dup2(data->stdout_copy, STDOUT_FILENO);
 	if (data->builtin_parent != 1)
@@ -73,6 +76,7 @@ int	first_execute(t_data *data)
 		data->index++;
 	}
 	wait_child(data);
+	data->pid = 0;
 	// free_everything(data);
 	return (TRUE);
 }

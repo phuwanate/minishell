@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 14:22:20 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/03 00:11:36 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/03 09:09:25 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	check_infile(t_token_node *curr_token, t_data *data)
 		if (curr_token->next != NULL)
 			close(data->fd_in);
 		curr_token = curr_token->next;
-		
 	}
 	dup2(data->fd_in, STDIN_FILENO);
 	close(data->fd_in);

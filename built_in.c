@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:28:48 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/02 23:02:15 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/03 13:17:14 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ void	change_dir(t_data *data, t_list_node *curr_list)
 
 int	get_curr_dir(t_data *data)
 {
-	char curr_dir[PATH_MAX];
-	
-	if(!getcwd(curr_dir, PATH_MAX))
+	char	curr_dir[PATH_MAX];
+
+	if (!getcwd(curr_dir, PATH_MAX))
 	{
 		perror("getcwd");
 		exit(1);
@@ -52,21 +52,47 @@ int	get_curr_dir(t_data *data)
 	return (data->errnum = 0, TRUE);
 }
 
-int	check_builtin_parent(t_data *data, t_list_node *curr_list)
+void	go_exit(t_data *data, t_list_node *curr_list)
 {
-	data->builtin_parent = 1;
-	if (curr_list->cmd == NULL)
-		return (data->builtin_parent = 0, FALSE);
-	if (ft_strcmp(curr_list->cmd->value, "cd") == 0)
-		change_dir(data, curr_list);
+	unsigned char	status;
+	int				status_err;
+
+	(void)data;
+	if (curr_list->cmd->next != NULL)
+	{
+		status_err = check_status(curr_list->cmd->next, &status);
+		if (status_err != 0)
+		{
+			if (status_err == 1)
+			{
+				ft_putendl_fd("exit", STDOUT_FILENO);
+				ft_putstr_fd("minishell: exit: ", STDOUT_FILENO);
+				ft_putstr_fd(curr_list->cmd->next->value, STDOUT_FILENO);
+				ft_putstr_fd(": ", STDOUT_FILENO);
+				ft_putendl_fd("numeric argument required", STDOUT_FILENO);
+				//need to free smth.
+				exit((int)status);
+			}
+			else if (status_err == 2)
+			{
+				ft_putendl_fd("exit", STDOUT_FILENO);
+				ft_putstr_fd("minishell: exit: ", STDOUT_FILENO);
+				ft_putendl_fd("too many arguments", STDOUT_FILENO);
+				//need to free smth.
+				data->errnum = (int)status;
+			}
+		}
+		else
+		{
+			ft_putendl_fd("exit", STDOUT_FILENO);
+			exit(((int)status));
+		}
+	}
 	else
-		return (data->builtin_parent = 0, FALSE);
-	return (TRUE);
+	{
+		ft_putendl_fd("exit", STDOUT_FILENO);
+	//need to free smth.
+		exit(0);
+	}
 }
 
-int	check_builtin_child(t_data *data, t_list_node *curr_list)
-{
-	if (ft_strcmp(curr_list->cmd->value, "pwd") == 0)
-		return(get_curr_dir(data), TRUE);
-	return (FALSE);
-}
