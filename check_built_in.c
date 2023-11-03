@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 09:53:15 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/03 15:01:51 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/03 15:53:28 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,21 @@ int	check_builtin_child(t_data *data, t_list_node *curr_list)
 	return (FALSE);
 }
 
-int	before_child_exe(t_list_node *curr_list)
+int	before_child_exe(t_data *data, t_list_node *curr_list)
 {
+	unsigned char	status;
+
+	(void)data;
 	if (ft_strcmp(curr_list->cmd->value, "cd") == 0)
 		return (FALSE);
 	else if (ft_strcmp(curr_list->cmd->value, "exit") == 0)
+	{
+		if (curr_list->cmd->next != NULL)
+		{
+			check_status(curr_list->cmd->next, &status);
+			exit((int)status);
+		}
 		return (FALSE);
+	}
 	return (TRUE);
 }
