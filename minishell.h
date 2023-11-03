@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:05:57 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/03 13:06:08 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/03 15:01:47 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ void	change_dir(t_data *data, t_list_node *curr_list);
 int		get_curr_dir(t_data *data);
 void	go_exit(t_data *data, t_list_node *curr_list);
 int		check_status(t_token_node *curr_token, unsigned char *status);
+int		before_child_exe(t_list_node *curr_list);
 
 
 #endif

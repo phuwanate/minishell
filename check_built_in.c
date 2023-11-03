@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 09:53:15 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/03 10:04:09 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/03 15:01:51 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,13 @@ int	check_builtin_child(t_data *data, t_list_node *curr_list)
 	if (ft_strcmp(curr_list->cmd->value, "pwd") == 0)
 		return (get_curr_dir(data), TRUE);
 	return (FALSE);
+}
+
+int	before_child_exe(t_list_node *curr_list)
+{
+	if (ft_strcmp(curr_list->cmd->value, "cd") == 0)
+		return (FALSE);
+	else if (ft_strcmp(curr_list->cmd->value, "exit") == 0)
+		return (FALSE);
+	return (TRUE);
 }
