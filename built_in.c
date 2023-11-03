@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:28:48 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/03 13:17:14 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/03 18:10:09 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,9 @@ void	go_exit(t_data *data, t_list_node *curr_list)
 		}
 		else
 		{
+			data->errnum = (int)status;
 			ft_putendl_fd("exit", STDOUT_FILENO);
-			exit(((int)status));
+			exit(data->errnum);
 		}
 	}
 	else
