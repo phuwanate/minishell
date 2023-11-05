@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:28:48 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/05 11:30:51 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/05 23:14:22 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,9 @@ void	change_dir(t_data *data, t_list_node *curr_list)
 		}
 	}
 	else
-		chdir(getenv("HOME"));
+		if(chdir(getenv("HOME")) == -1)
+		{
+			ft_putendl_fd("cd: HOME not set", 2);
+			data->errnum = 1;
+		}
 }
