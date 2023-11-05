@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 15:18:25 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/03 17:24:41 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/05 22:17:57 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	wait_child(t_data *data)
 	i = 0;
 	while (i < data->num_child)
 		waitpid(data->pid[i++], &data->errnum, WUNTRACED);
-	i = 0;
 	free(data->pid);
 	data->pid = NULL;
 	if (data->builtin_parent != 1)
