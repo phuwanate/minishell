@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 09:53:15 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/05 22:54:19 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/05 23:06:40 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ int	before_child_exe(t_data *data, t_list_node *curr_list)
 	unsigned char	status;
 	
 	if (ft_strcmp(curr_list->cmd->value, "cd") == 0)
+	{	
+		change_dir(data, curr_list);
 		return (FALSE);
+	}
 	else if (ft_strcmp(curr_list->cmd->value, "exit") == 0)
 	{
 		if (curr_list->cmd->next != NULL)
