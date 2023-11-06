@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 14:22:20 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/03 17:19:46 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/06 12:20:59 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ int	check_infile(t_token_node *curr_token, t_data *data)
 			{
 				data->fd_in = open(curr_token->value, O_RDONLY);
 				if (data->fd_in == -1)
+				{
 					file_error(data, curr_token->value);
+					return (FALSE);
+				}
 			}
 			if (curr_token->mark == m_heredoc)
 				data->fd_in = curr_token->here_doc_fd;
@@ -35,7 +38,7 @@ int	check_infile(t_token_node *curr_token, t_data *data)
 		data->fd_in = dup(data->stdin_copy);
 	dup2(data->fd_in, STDIN_FILENO);
 	close(data->fd_in);
-	return (0);
+	return (TRUE);
 }
 
 int	check_outfile(t_token_node *curr_token, t_data *data)
@@ -51,7 +54,10 @@ int	check_outfile(t_token_node *curr_token, t_data *data)
 				data->fd_out = open(curr_token->value, O_APPEND | O_WRONLY | \
 				O_CREAT, 0644);
 			if (data->fd_out == -1)
+			{
 				file_error(data, curr_token->value);
+				return (FALSE);
+			}
 			if (curr_token->next != NULL)
 				close(data->fd_out);
 			curr_token = curr_token->next;
@@ -61,7 +67,7 @@ int	check_outfile(t_token_node *curr_token, t_data *data)
 		data->fd_out = dup(data->stdout_copy);
 	dup2(data->fd_out, STDOUT_FILENO);
 	close(data->fd_out);
-	return (0);
+	return (TRUE);
 }
 
 int	open_heredoc(t_token_node *curr_token)

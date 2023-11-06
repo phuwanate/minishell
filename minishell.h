@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:05:57 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/05 22:21:54 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/06 23:07:47 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,17 @@ int		check_status(t_token_node *curr_token, unsigned char *status);
 int		before_child_exe(t_data *data, t_list_node *curr_list);
 int		export_new_env(t_data *data, t_token_node *curr_token);
 int		declare_env(t_data *data);
-void	is_valid_ident(t_data *data, t_token_node *curr_token);
+int		is_valid_ident(t_data *data, t_token_node *curr_token);
 long	ft_atol(const char *str, int *status);
+int		check_inout_file(t_data *data, t_list_node *curr_list);
+void    free_env(char **env_copy);
+char	*join_quote(char *env_copy);
+void	sort_env(t_data *data, char **env_copy);
+void	call_env(t_data *data, t_token_node *curr_token);
+void	echo_words(t_data *data, t_token_node *curr_token);
+int		is_directory(const char *path);
+void	cd_path_error(t_data *data, t_token_node *curr_token);
+void	export_err(t_data *data, t_token_node *curr_token);
+void	unset_err(t_data *data, t_token_node *curr_token);
 
 #endif

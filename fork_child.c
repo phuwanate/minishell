@@ -6,16 +6,31 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 15:14:15 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/05 22:53:27 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/06 16:41:16 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	check_inout_file(t_data *data, t_list_node *curr_list)
+{
+	if (curr_list->infile != NULL)
+	{
+		if (check_infile(curr_list->infile, data) == FALSE)
+			return (FALSE);
+	}
+	if (curr_list->outfile != NULL)
+	{
+		if (check_outfile(curr_list->outfile, data) == FALSE)
+			return (FALSE);
+	}
+	return (TRUE);
+}
+
 void	pipe_next_child(int *pipe_w, int *pipe_r)
 {
 	if (dup2(*pipe_r, STDIN_FILENO) == -1)
-		dprintf(2, "duplicate infile error\n");
+		ft_putendl_fd("duplicate read-end error", 2);
 	close(*pipe_r);
 	close(*pipe_w);
 }
@@ -23,14 +38,11 @@ void	pipe_next_child(int *pipe_w, int *pipe_r)
 void	check_everything(t_list_node *curr_list, t_data *data, \
 int *pipe_w, int *pipe_r)
 {
-	if (curr_list->infile != NULL)
-		check_infile(curr_list->infile, data);
-	if (curr_list->outfile != NULL)
-		check_outfile(curr_list->outfile, data);
-	else if (curr_list->next != NULL)
+	check_inout_file(data, curr_list);
+	if (curr_list->outfile == NULL && curr_list->next != NULL)
 	{
 		if (dup2(*pipe_w, STDOUT_FILENO) == -1)
-			dprintf(2, "duplicate outfile error\n");
+			ft_putendl_fd("duplicate write-end error", 2);
 		close(*pipe_r);
 		close(*pipe_w);
 	}
@@ -38,11 +50,8 @@ int *pipe_w, int *pipe_r)
 	{
 		if (before_child_exe(data, curr_list) == TRUE)
 			get_path(curr_list, data);
-		else
-			exit(data->errnum);
 	}
-	else
-		exit(0);
+	exit(0);
 }
 
 void	fork_child(t_data *data, t_list_node *curr_list, int *pipe_w, \
@@ -50,7 +59,7 @@ int *pipe_r)
 {
 	if (curr_list->next != NULL)
 		data->child_born = 1;
-	else if (data->child_born == 0 && check_builtin_parent(data, curr_list) \
+	if (data->child_born == 0 && check_builtin_parent(data, curr_list) \
 	== TRUE)
 	{
 		return ;

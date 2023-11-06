@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:40:10 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/02 21:34:39 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/06 22:28:39 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,20 @@ static void	free_path(char *path)
 	path = NULL;
 }
 
-static char	**split_path(t_data *data, char *path)
+static char	**split_path(t_data *data, char *path, t_list_node *curr_list)
 {
 	char	**path_split;
 
-	(void)data;
+	if (path == NULL)
+		path_error(data, curr_list->cmd);
 	path_split = ft_split(path, ':');
 	if (!path_split)
 	{
 		exit(1);
 		// free_path(path);
-		// free_2d(av);
-		// free_mem(data, 1);
 	}
+	free_path(path);
 	return (path_split);
-}
-
-int is_directory(const char *path) {
-    struct stat path_stat;
-    if(stat(path, &path_stat) != 0)
-		  return(0);
-	  return S_ISDIR(path_stat.st_mode);
 }
 
 static void	check_slash(t_data *data, t_list_node *curr_list)
@@ -61,7 +54,6 @@ static void	check_slash(t_data *data, t_list_node *curr_list)
 			ft_putendl_fd(strerror(errno), 2);
 			// free_2d(spl_av);
 			exit(126);
-			// free_mem(data, 126);
 		}
 		else
 			path_error(data, curr_list->cmd);
@@ -75,11 +67,10 @@ static void	ext_path(t_list_node *curr_list, t_data *data, char *path_exec)
 	char	**path2;
 	int		i;
 
-	errno = 0;
+	// errno = 0;
 	check_slash(data, curr_list);
-	path = ft_substr(path_exec, 5, data->len_path);
-	path2 = split_path(data, path);
-	free_path(path);
+	path2 = split_path(data, ft_substr(path_exec, 5, data->len_path),\
+	 curr_list);
 	i = 0;
 	while (path2[i])
 	{
@@ -95,9 +86,8 @@ static void	ext_path(t_list_node *curr_list, t_data *data, char *path_exec)
 		free_path(path);
 		i++;
 	}
-	// free_2d(path2);
-	if (errno != 0)
-		cmd_error(data, curr_list->cmd);
+	// if (errno != 0)
+	cmd_error(data, curr_list->cmd);
 }
 
 void	get_path(t_list_node *curr_list, t_data *data)
@@ -111,8 +101,10 @@ void	get_path(t_list_node *curr_list, t_data *data)
 	path_exec = NULL;
 	while (data->env[i])
 	{
-		data->len_path = ft_strlen(data->env[i]);
 		status = find_path(data->env[i]);
+		data->len_path = ft_strlen(data->env[i]);
+		if(status == 1 && data->len_path == 5)
+			break;
 		if (status == 1)
 		{
 			path_exec = data->env[i];

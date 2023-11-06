@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:28:48 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/05 23:14:22 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/06 22:31:50 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	change_dir(t_data *data, t_list_node *curr_list)
 		else if (errno == 13)
 			file_error(data, curr_list->cmd->next->value);
 		else if (errno == 2)
-			path_error(data, curr_list->cmd->next);
+			cd_path_error(data, curr_list->cmd->next);
 		else
 		{
 			ft_putstr_fd("cd", 2);
