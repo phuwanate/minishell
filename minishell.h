@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:05:57 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/06 23:07:47 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 14:02:05 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,5 +148,9 @@ int		is_directory(const char *path);
 void	cd_path_error(t_data *data, t_token_node *curr_token);
 void	export_err(t_data *data, t_token_node *curr_token);
 void	unset_err(t_data *data, t_token_node *curr_token);
+int		unset_env(t_data *data, t_token_node *curr_token);
+int		is_duplicate(char *s1, char *s2);
+int		is_valid_unset(t_data *data, t_token_node *curr_token);
+size_t  len_env(char *str);
 
 #endif

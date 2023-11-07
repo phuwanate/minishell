@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:40:10 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/06 22:28:39 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 13:58:12 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	get_path(t_list_node *curr_list, t_data *data)
 		}
 		i++;
 	}
-	if (status == 0)
+	if (access(curr_list->cmd->value, X_OK) == -1 && status == 0)
 		path_error(data, curr_list->cmd);
 	ext_path(curr_list, data, path_exec);
 }

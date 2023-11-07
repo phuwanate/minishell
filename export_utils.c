@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 20:24:24 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/06 23:13:45 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 11:07:29 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,13 @@ int is_valid_ident(t_data *data, t_token_node *curr_token)
     
     (void)data;
     i = 0;
+    if (ft_isalpha(curr_token->value[0]) == 0 && (curr_token->value[i] != '_'))
+        return(FALSE);
     while (curr_token->value[i])
     {
         if (curr_token->value[i] == '=')
             return (TRUE);
-        if (ft_isalpha(curr_token->value[i]) == 0)
+        if (ft_isalnum(curr_token->value[i]) == 0 && (curr_token->value[i] != '_'))
            return (FALSE);
         i++;
     }
@@ -93,4 +95,18 @@ void sort_env(t_data *data, char **env_copy)
         }
         i++;
     }
+}
+
+size_t  len_env(char *str)
+{
+    size_t  i;
+
+    i = 0;
+    if (!str)
+        return (0);
+    while (str[i] && str[i] != '=')
+    {
+        i++;
+    }
+    return (i);
 }

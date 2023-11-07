@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 09:53:15 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/06 23:09:25 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 13:57:58 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,14 @@ int	check_builtin_parent(t_data *data, t_list_node *curr_list)
 		if (export_new_env(data, curr_list->cmd->next) == FALSE)
 			return (data->builtin_parent = 0, FALSE);
 		data->errnum = 0;
-	}	
+	}
+	else if (ft_strcmp(curr_list->cmd->value, "unset") == 0)
+	{
+		data->builtin_parent = 1;
+		if (unset_env(data, curr_list->cmd->next) == FALSE)
+			return (data->builtin_parent = 0, FALSE);
+		data->errnum = 0;
+	}
 	else
 		return (data->builtin_parent = 0, FALSE);
 	return (TRUE);
@@ -87,7 +94,9 @@ int	before_child_exe(t_data *data, t_list_node *curr_list)
 	}
 	else if (ft_strcmp(curr_list->cmd->value, "unset") == 0)
 	{
-		if (is_valid_ident(data, curr_list->cmd->next) == FALSE)
+		if (curr_list->cmd->next == NULL)
+        	exit(0);
+		if (is_valid_unset(data, curr_list->cmd->next) == FALSE)
 			unset_err(data, curr_list->cmd->next);
 		else
 			exit(0);
