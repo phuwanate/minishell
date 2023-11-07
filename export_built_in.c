@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 11:23:15 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 17:42:51 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:30:06 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	is_duplicate(char *s1, char *s2)
 	return (1);
 }
 
-int search_duplicate(t_data *data, t_token_node *curr_token)
+static int search_duplicate(t_data *data, t_token_node *curr_token)
 {
     size_t i;
     

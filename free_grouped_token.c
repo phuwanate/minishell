@@ -6,13 +6,13 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:49:24 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 13:48:52 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:34:12 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void 	free_token_node(t_token_node *curr_token)
+static void	free_token_node(t_token_node *curr_token)
 {
 	t_token_node	*tmp;
 	

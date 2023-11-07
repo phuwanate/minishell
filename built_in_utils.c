@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 10:22:07 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/03 13:18:35 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:25:24 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ long	ft_atol(const char *str, int *status)
 	return (result * sign);
 }
 
-int	check_digit(char *str, int index, unsigned char *status)
+static int	check_digit(char *str, int index, unsigned char *status)
 {
 	while (str[index])
 	{

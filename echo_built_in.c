@@ -6,13 +6,13 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 20:45:03 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/06 22:01:14 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:28:46 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int flag_check(t_token_node *curr_token)
+static int flag_check(t_token_node *curr_token)
 {
     size_t  i;
 

@@ -6,13 +6,13 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 15:18:25 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 17:56:57 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:31:18 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	check_numchild(t_data *data)
+static void	check_numchild(t_data *data)
 {
 	t_list_node	*run;
 	int			i;
@@ -27,7 +27,7 @@ void	check_numchild(t_data *data)
 	data->num_child = i;
 }
 
-int	prep_before_fork(t_data *data, t_list_node *curr_list)
+static int	prep_before_fork(t_data *data, t_list_node *curr_list)
 {
 	check_numchild(data);
 	data->pid = malloc(sizeof(int) * data->num_child);
@@ -40,7 +40,7 @@ int	prep_before_fork(t_data *data, t_list_node *curr_list)
 	return (TRUE);
 }
 
-void	wait_child(t_data *data)
+static void	wait_child(t_data *data)
 {
 	int		i;
 
@@ -53,7 +53,7 @@ void	wait_child(t_data *data)
 		data->errnum = WEXITSTATUS(data->errnum);
 }
 
-void	restore_fd(t_data *data)
+static void	restore_fd(t_data *data)
 {
 	dup2(data->stdin_copy, STDIN_FILENO);
 	dup2(data->stdout_copy, STDOUT_FILENO);

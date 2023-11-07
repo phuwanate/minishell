@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:05:57 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 21:05:37 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:32:41 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,6 @@ int		ft_strcmp(const char *s1, const char *s2);
 void	free_everything(t_data *data);
 void	rl_clear_history(void);
 void	rl_replace_line(const char *text, int clear_undo);
-void	check_everything(t_list_node *curr_list, t_data *data, \
-		int *pipe_w, int *pipe_r);
-
 void	fork_child(t_data *data, t_list_node *curr_list, int *pipe_w, \
 		int *pipe_r);
 
@@ -128,7 +125,7 @@ void	cmd_error(t_data *data, t_token_node *curr_token);
 //Built in
 int		check_builtin_parent(t_data *data, t_list_node *curr_list);
 int		check_builtin_child(t_data *data, t_list_node *curr_list);
-void		change_dir(t_data *data, t_list_node *curr_list);
+void	change_dir(t_data *data, t_list_node *curr_list);
 int		get_curr_dir(t_data *data);
 void	go_exit(t_data *data, t_list_node *curr_list);
 int		check_status(t_token_node *curr_token, unsigned char *status);

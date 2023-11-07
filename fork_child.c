@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 15:14:15 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 14:37:24 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:33:17 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	check_inout_file(t_data *data, t_list_node *curr_list)
 	return (TRUE);
 }
 
-void	pipe_next_child(int *pipe_w, int *pipe_r)
+static void	pipe_next_child(int *pipe_w, int *pipe_r)
 {
 	if (dup2(*pipe_r, STDIN_FILENO) == -1)
 		ft_putendl_fd("duplicate read-end error", 2);
@@ -35,7 +35,7 @@ void	pipe_next_child(int *pipe_w, int *pipe_r)
 	close(*pipe_w);
 }
 
-void	check_everything(t_list_node *curr_list, t_data *data, \
+static void	check_everything(t_list_node *curr_list, t_data *data, \
 int *pipe_w, int *pipe_r)
 {
 	check_inout_file(data, curr_list);
