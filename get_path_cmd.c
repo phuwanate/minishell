@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:40:10 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 20:59:32 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:05:27 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ static void	ext_path(t_list_node *curr_list, t_data *data, char *path_exec)
 		free_path(path);
 		i++;
 	}
-	// if (errno != 0)
 	cmd_error(data, curr_list->cmd);
 }
 

@@ -6,13 +6,12 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 11:31:01 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 21:00:58 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:05:49 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//pwd
 int	get_curr_dir(t_data *data)
 {
 	char	curr_dir[PATH_MAX];

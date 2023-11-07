@@ -6,13 +6,12 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 11:22:29 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 16:20:51 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:05:23 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//exit
 void	go_exit(t_data *data, t_list_node *curr_list)
 {
 	unsigned char	status;

@@ -6,15 +6,12 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:28:48 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 20:49:36 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:04:36 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//Parent builtin: cd, export, unset, exit
-//Child builtin: echo, pwd, env
-//cd
 void	change_dir(t_data *data, t_list_node *curr_list)
 {
 	if (curr_list->cmd->next != NULL)

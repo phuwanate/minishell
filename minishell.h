@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:05:57 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 19:00:55 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:05:37 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,7 @@ typedef struct s_group_ptr
 	t_token_ptr		outfile;
 	t_token_ptr		cmd;
 }						t_group_ptr;
-//token_to_organize
-//make_list_node
+
 typedef struct s_list_node
 {
 	int					is_pipe;
@@ -97,7 +96,6 @@ typedef struct s_data
 	int					child_born;
 }						t_data;
 
-//First function
 int		first_execute(t_data *data);
 void	path_cpy(char *dst, const char *src);
 int		make_infile(t_list_node *token_center);
