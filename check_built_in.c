@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 09:53:15 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 13:57:58 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 18:19:03 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	check_builtin_parent(t_data *data, t_list_node *curr_list)
 		return (data->builtin_parent = 0, FALSE);
 	data->builtin_parent = 1;
 	if (check_inout_file(data, curr_list) == FALSE)
-		return(data->builtin_parent = 0, TRUE);
+		return(data->builtin_parent = 1, TRUE);
 	data->builtin_parent = 0;
 	if (ft_strcmp(curr_list->cmd->value, "cd") == 0)
 	{
@@ -66,7 +66,7 @@ int	before_child_exe(t_data *data, t_list_node *curr_list)
 	
 	if (ft_strcmp(curr_list->cmd->value, "cd") == 0)
 	{	
-		change_dir(data, curr_list);
+		check_cd_err(data, curr_list);
 		return (FALSE);
 	}
 	else if (ft_strcmp(curr_list->cmd->value, "exit") == 0)
@@ -74,6 +74,7 @@ int	before_child_exe(t_data *data, t_list_node *curr_list)
 		if (curr_list->cmd->next != NULL)
 		{
 			check_status(curr_list->cmd->next, &status);
+			free_everything(data);
 			exit((int)status);
 		}
 		return (FALSE);
@@ -83,6 +84,7 @@ int	before_child_exe(t_data *data, t_list_node *curr_list)
 		if (curr_list->cmd->next == NULL)
 		{
 			declare_env(data);
+			free_everything(data);
 			exit(0);
 		}
 		else if (is_valid_ident(data, curr_list->cmd->next) == FALSE)
@@ -90,7 +92,10 @@ int	before_child_exe(t_data *data, t_list_node *curr_list)
 		else if (curr_list->cmd->next->value[0] == '=')
 			export_err(data, curr_list->cmd->next);
 		else
+		{
+			free_everything(data);
 			exit(0);
+		}
 	}
 	else if (ft_strcmp(curr_list->cmd->value, "unset") == 0)
 	{

@@ -1,34 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_built_in.c                                     :+:      :+:    :+:   */
+/*   handle_memory.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 15:11:54 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 17:43:04 by plertsir         ###   ########.fr       */
+/*   Created: 2023/11/01 09:48:33 by plertsir          #+#    #+#             */
+/*   Updated: 2023/11/07 13:10:50 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void call_env(t_data *data, t_token_node *curr_token)
+void	free_everything(t_data *data)
 {
-    size_t i;
-
-    i = 0;
-    if (curr_token->next != NULL)
-    {
-        ft_putstr_fd("minishell: env: ", 2);
-        ft_putendl_fd("too many arguments", 2);
-        if (data->builtin_parent == 1)
-            data->errnum = 1;
-        else
-            exit(1);
-    }
-    while (data->env[i])
-    {
-        ft_putendl_fd(data->env[i], 1);
-        i++;
-    }
+	if (data->grouped_token != NULL)
+		free_grouped_token(data->grouped_token);
+	if (data->env != NULL)
+		free_env(data->env);
+	if (data->pid != NULL)
+	{
+		free(data->pid);
+		data->pid = NULL;
+	}
+	return ;
 }

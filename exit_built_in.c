@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 11:22:29 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 13:58:04 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 16:20:51 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	go_exit(t_data *data, t_list_node *curr_list)
 				ft_putstr_fd(curr_list->cmd->next->value, STDOUT_FILENO);
 				ft_putstr_fd(": ", STDOUT_FILENO);
 				ft_putendl_fd("numeric argument required", STDOUT_FILENO);
-				//need to free smth.
+				free_everything(data);
 				exit((int)status);
 			}
 			else if (status_err == 2)
@@ -39,7 +39,6 @@ void	go_exit(t_data *data, t_list_node *curr_list)
 				ft_putendl_fd("exit", STDOUT_FILENO);
 				ft_putstr_fd("minishell: exit: ", STDOUT_FILENO);
 				ft_putendl_fd("too many arguments", STDOUT_FILENO);
-				//need to free smth.
 				data->errnum = (int)status;
 			}
 		}
@@ -47,13 +46,11 @@ void	go_exit(t_data *data, t_list_node *curr_list)
 		{
 			data->errnum = (int)status;
 			ft_putendl_fd("exit", STDOUT_FILENO);
+			free_everything(data);
 			exit(data->errnum);
 		}
 	}
-	else
-	{
-		ft_putendl_fd("exit", STDOUT_FILENO);
-	//need to free smth.
-		exit(0);
-	}
+	ft_putendl_fd("exit", STDOUT_FILENO);
+	free_everything(data);
+	exit(0);
 }

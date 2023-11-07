@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:28:48 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/06 22:31:50 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 18:12:51 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	change_dir(t_data *data, t_list_node *curr_list)
 			cd_path_error(data, curr_list->cmd->next);
 		else
 		{
-			ft_putstr_fd("cd", 2);
-			ft_putstr_fd(": ", 2);
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd("cd: ", 2);
 			ft_putstr_fd(curr_list->cmd->next->value, 2);
 			ft_putstr_fd(": ", 2);
 			ft_putendl_fd("Not a directory", 2);
@@ -36,9 +36,37 @@ void	change_dir(t_data *data, t_list_node *curr_list)
 		}
 	}
 	else
+	{
 		if(chdir(getenv("HOME")) == -1)
 		{
 			ft_putendl_fd("cd: HOME not set", 2);
 			data->errnum = 1;
 		}
+	}
+}
+
+void	check_cd_err(t_data *data, t_list_node *curr_list)
+{
+	if (curr_list->cmd->next != NULL)
+	{
+		if (chdir(curr_list->cmd->next->value) != -1)
+			data->errnum = 0;
+		else if (errno == 13)
+			file_error(data, curr_list->cmd->next->value);
+		else if (errno == 2)
+			cd_path_error(data, curr_list->cmd->next);
+		else
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd("cd: ", 2);
+			ft_putstr_fd(curr_list->cmd->next->value, 2);
+			ft_putstr_fd(": ", 2);
+			ft_putendl_fd("Not a directory", 2);
+			data->errnum = 1;
+			free_everything(data);
+			exit(1);
+		}
+	}
+	else
+		exit(0);
 }

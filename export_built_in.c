@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 11:23:15 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 15:30:57 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 17:42:51 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	is_duplicate(char *s1, char *s2)
 {
 	int		i;
     size_t  s1_len;
-    // size_t  s2_len;
 
 	i = 0;
     s1_len = len_env(s1);

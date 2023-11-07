@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:05:57 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 14:02:05 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 18:12:57 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,11 @@ typedef struct s_list_node
 typedef struct s_data
 {
 	size_t				env_row_max;
-	t_token_ptr			unorganized_token;
+	t_token_ptr			lst_token;
 	t_list_node			*grouped_token;
 	char				**env;
 	char				*path_exec;
+	int					in_dbq;
 	int					errnum;
 	int					stdin_copy;
 	int					stdout_copy;
@@ -129,7 +130,7 @@ void	cmd_error(t_data *data, t_token_node *curr_token);
 //Built in
 int		check_builtin_parent(t_data *data, t_list_node *curr_list);
 int		check_builtin_child(t_data *data, t_list_node *curr_list);
-void	change_dir(t_data *data, t_list_node *curr_list);
+void		change_dir(t_data *data, t_list_node *curr_list);
 int		get_curr_dir(t_data *data);
 void	go_exit(t_data *data, t_list_node *curr_list);
 int		check_status(t_token_node *curr_token, unsigned char *status);
@@ -152,5 +153,8 @@ int		unset_env(t_data *data, t_token_node *curr_token);
 int		is_duplicate(char *s1, char *s2);
 int		is_valid_unset(t_data *data, t_token_node *curr_token);
 size_t  len_env(char *str);
+void    free_grouped_token(t_list_node  *curr_list);
+void	free_everything(t_data *data);
+void	check_cd_err(t_data *data, t_list_node *curr_list);
 
 #endif
