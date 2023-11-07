@@ -14,7 +14,7 @@ SRC = execute.c first_main.c fork_child.c get_path_cmd.c input_error.c\
 	input_output.c mns.c utils.c cd_built_in.c exit_built_in.c\
 	export_built_in.c check_built_in.c built_in_utils.c pwd_built_in.c\
 	export_utils.c env_built_in.c echo_built_in.c built_in_error.c\
-	unset_built_in.c handle_memory.c free_grouped_token.c
+	unset_built_in.c handle_memory.c free_grouped_token.c execute_utils.c
 
 OBJ_DIR = object/
 

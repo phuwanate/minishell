@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:27:51 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 13:58:01 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 18:54:17 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,5 @@ void	go_exec(t_data *data, t_list_node *curr_list)
 		data->index++;
 	}
 	execve(path_exec[0], path_exec, data->env);
-	//need to free
+	execeve_fail(data);
 }

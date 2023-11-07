@@ -415,11 +415,9 @@ static void	ft_rpl(char **env_rpl, char **str, char **p_same, t_data *data)
 	char	*env_c;
 	char	*tmp;
 	char	*get_env;
-	// char	*p_check;
 	int		flg;
 
 	flg = 0;
-	// p_check = (*p_same);
 	env_c = ft_substr(*p_same, 1, *str - *p_same - 1);
 	get_env = env_k(data, env_c);
 	tmp = *env_rpl;
@@ -907,40 +905,46 @@ static void	env_init(t_data *data, char **envp)
 	data->env_row_max = row;
 }
 
-// static void	sig_quit_handling(int sig_num)
-// {
-// 	if (sig_num == SIGINT && g_signal == 0)
-// 		rl_redisplay();
-// }
-
-static void	sig_int_handling(int sig_num)
+void	sig_quit(int signum)
 {
-	if (sig_num == SIGINT && g_signal == 0)
+	if (signum == SIGQUIT && g_signal == 0)
 	{
-		ft_putchar_fd('\n', STDOUT_FILENO);
-		rl_on_new_line();
-		rl_replace_line("", STDOUT_FILENO);
 		rl_redisplay();
 	}
 }
 
-static void	signal_init(void)
+void	sig_int(int signum)
 {
-	t_sigaction	sig_int;
-	t_sigaction	sig_quit;
-
-	sig_int.sa_handler = sig_int_handling;
-	sigemptyset(&sig_int.sa_mask);
-	sig_int.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &sig_int, NULL);
-	// sig_quit.sa_handler = sig_quit_handling;
-	sig_quit.sa_handler = SIG_IGN;
-	sigemptyset(&sig_quit.sa_mask);
-	sig_quit.sa_flags = SA_RESTART;
-	sigaction(SIGQUIT, &sig_quit, NULL);
+	if (signum == SIGINT && g_signal== 0)
+	{
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
 
-void	mns_init(t_data *data, char **envp)
+int signal_init(void)
+{
+	t_sigaction	sig1;
+	t_sigaction	sig2;
+
+	if (sigemptyset(&sig1.sa_mask) == -1)
+		return (0);
+	if (sigemptyset(&sig2.sa_mask) == -1)
+		return (0);
+	sig1.sa_flags = SA_RESTART;
+	sig1.__sigaction_u.__sa_handler = sig_int;
+	sig2.sa_flags = SA_RESTART;
+	sig2.__sigaction_u.__sa_handler = sig_quit;
+	if (sigaction(SIGINT, &sig1, NULL) == -1)
+		return (0);
+	if (sigaction(SIGQUIT, &sig2, NULL) == -1)
+		return (0);
+	return (1);
+}
+
+int	mns_init(t_data *data, char **envp)
 {
 	g_signal = 0;
 	data->errnum = 0;
@@ -960,8 +964,10 @@ void	mns_init(t_data *data, char **envp)
 	data->index = 0;
 	data->len_path = 0;
 	data->builtin_parent = 0;
-	signal_init ();
+	if (!signal_init ())
+		return (0);
 	env_init(data, envp);
+	return (1);
 }
 
 /* ************************************************************************** */
@@ -992,7 +998,8 @@ int main(int argc, char **argv, char **envp)
 		printf("minishell: incorrect input");
 		return (0);
 	}
-	mns_init(&data, envp);
+	if (!mns_init(&data, envp))
+		return (0);
 	while (1)
 	{
 		if (main_while(&data))

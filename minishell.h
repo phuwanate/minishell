@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:05:57 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 18:12:57 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 19:00:55 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,5 +156,6 @@ size_t  len_env(char *str);
 void    free_grouped_token(t_list_node  *curr_list);
 void	free_everything(t_data *data);
 void	check_cd_err(t_data *data, t_list_node *curr_list);
+void    execeve_fail(t_data *data);
 
 #endif
