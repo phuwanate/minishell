@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 15:11:54 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 17:43:04 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 20:50:24 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void call_env(t_data *data, t_token_node *curr_token)
         if (data->builtin_parent == 1)
             data->errnum = 1;
         else
+        {
+            free_everything(data);
             exit(1);
+        }
     }
     while (data->env[i])
     {

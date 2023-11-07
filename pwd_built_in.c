@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 11:31:01 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 13:57:19 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 21:00:58 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	get_curr_dir(t_data *data)
 	if (!getcwd(curr_dir, PATH_MAX))
 	{
 		perror("getcwd");
+		free_everything(data);
 		exit(1);
 	}
 	ft_putendl_fd(curr_dir, STDOUT_FILENO);

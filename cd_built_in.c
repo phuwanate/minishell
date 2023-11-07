@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:28:48 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 18:12:51 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 20:49:36 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,8 @@ void	check_cd_err(t_data *data, t_list_node *curr_list)
 		}
 	}
 	else
+	{
+		free_everything(data);
 		exit(0);
+	}
 }

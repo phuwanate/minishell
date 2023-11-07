@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:40:10 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 13:58:12 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 20:59:32 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ static char	**split_path(t_data *data, char *path, t_list_node *curr_list)
 	path_split = ft_split(path, ':');
 	if (!path_split)
 	{
+		free_everything(data);
+		free_path(path);
 		exit(1);
-		// free_path(path);
 	}
 	free_path(path);
 	return (path_split);
@@ -43,6 +44,7 @@ static void	check_slash(t_data *data, t_list_node *curr_list)
 			ft_putstr_fd(curr_list->cmd->value, 2);
 			ft_putstr_fd(": ", 2);
 			ft_putendl_fd(" is a directory", 2);
+			free_everything(data);
 			exit(126);
 		}
 		if (access(curr_list->cmd->value, X_OK) != -1)
@@ -52,7 +54,7 @@ static void	check_slash(t_data *data, t_list_node *curr_list)
 			ft_putstr_fd(curr_list->cmd->value, 2);
 			ft_putstr_fd(": ", 2);
 			ft_putendl_fd(strerror(errno), 2);
-			// free_2d(spl_av);
+			free_everything(data);
 			exit(126);
 		}
 		else
@@ -67,7 +69,6 @@ static void	ext_path(t_list_node *curr_list, t_data *data, char *path_exec)
 	char	**path2;
 	int		i;
 
-	// errno = 0;
 	check_slash(data, curr_list);
 	path2 = split_path(data, ft_substr(path_exec, 5, data->len_path),\
 	 curr_list);

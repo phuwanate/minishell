@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 09:53:15 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 18:19:03 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/07 20:50:07 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,11 +100,17 @@ int	before_child_exe(t_data *data, t_list_node *curr_list)
 	else if (ft_strcmp(curr_list->cmd->value, "unset") == 0)
 	{
 		if (curr_list->cmd->next == NULL)
+		{
+			free_everything(data);
         	exit(0);
+		}
 		if (is_valid_unset(data, curr_list->cmd->next) == FALSE)
 			unset_err(data, curr_list->cmd->next);
 		else
+		{
+			free_everything(data);
 			exit(0);
+		}
 	}
 	return (TRUE);
 }
