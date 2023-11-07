@@ -19,7 +19,7 @@ void call_env(t_data *data, t_token_node *curr_token)
     i = 0;
     if (curr_token->next != NULL)
     {
-        ft_putstr_fd("minishell-42: env: ", 2);
+        ft_putstr_fd("minishell: env: ", 2);
         ft_putendl_fd("too many arguments", 2);
         if (data->builtin_parent == 1)
             data->errnum = 1;
