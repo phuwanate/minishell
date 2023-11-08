@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:40:10 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 21:05:27 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/08 23:37:48 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void	check_slash(t_data *data, t_list_node *curr_list)
 	{
 		if (is_directory(curr_list->cmd->value) == 1)
 		{
+			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(curr_list->cmd->value, 2);
 			ft_putstr_fd(": ", 2);
 			ft_putendl_fd(" is a directory", 2);
@@ -51,6 +52,7 @@ static void	check_slash(t_data *data, t_list_node *curr_list)
 			go_exec(data, curr_list);
 		else if (errno == 13)
 		{
+			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(curr_list->cmd->value, 2);
 			ft_putstr_fd(": ", 2);
 			ft_putendl_fd(strerror(errno), 2);
