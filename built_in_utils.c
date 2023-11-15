@@ -6,13 +6,26 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 10:22:07 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 21:25:24 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/15 14:16:23 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-long	ft_atol(const char *str, int *status)
+void	check_sign(char *str, long *sign)
+{
+	while (*str == ' ' || *str == '\n' || *str == '\t' \
+	|| *str == '\v' || *str == '\f' || *str == '\r')
+		str++;
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			*sign = -1;
+		str++;
+	}
+}
+
+long	ft_atol(char *str, int *status)
 {
 	unsigned long	sum;
 	long			result;
@@ -24,15 +37,7 @@ long	ft_atol(const char *str, int *status)
 	sum = 0;
 	sign = 1;
 	is_neg = 0;
-	while (*str == ' ' || *str == '\n' || *str == '\t'
-		|| *str == '\v' || *str == '\f' || *str == '\r')
-		str++;
-	if (*str == '-' || *str == '+')
-	{
-		if (*str == '-')
-			sign = -1;
-		str++;
-	}
+	check_sign(str, &sign);
 	if (sign == -1)
 		is_neg = 1;
 	max_sum = (size_t)LONG_MAX + is_neg;
@@ -82,4 +87,3 @@ int	check_status(t_token_node *curr_token, unsigned char *status)
 	*status = ft_atol(str, &is_overflow);
 	return (is_overflow);
 }
-

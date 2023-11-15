@@ -6,31 +6,15 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 09:53:15 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 20:50:07 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/15 14:44:17 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_builtin_parent(t_data *data, t_list_node *curr_list)
+static int	check_builtin_parent2(t_data *data, t_list_node *curr_list)
 {
-	if (curr_list->cmd == NULL)
-		return (data->builtin_parent = 0, FALSE);
-	data->builtin_parent = 1;
-	if (check_inout_file(data, curr_list) == FALSE)
-		return(data->builtin_parent = 1, TRUE);
-	data->builtin_parent = 0;
-	if (ft_strcmp(curr_list->cmd->value, "cd") == 0)
-	{
-		data->builtin_parent = 1;
-		change_dir(data, curr_list);
-	}
-	else if (ft_strcmp(curr_list->cmd->value, "exit") == 0)
-	{
-		data->builtin_parent = 1;
-		go_exit(data, curr_list);
-	}
-	else if (ft_strcmp(curr_list->cmd->value, "export") == 0)
+	if (ft_strcmp(curr_list->cmd->value, "export") == 0)
 	{
 		data->builtin_parent = 1;
 		if (export_new_env(data, curr_list->cmd->next) == FALSE)
@@ -49,8 +33,38 @@ int	check_builtin_parent(t_data *data, t_list_node *curr_list)
 	return (TRUE);
 }
 
+int	check_builtin_parent(t_data *data, t_list_node *curr_list)
+{
+	if (curr_list->cmd == NULL)
+		return (data->builtin_parent = 0, FALSE);
+	data->builtin_parent = 1;
+	if (check_inout_file(data, curr_list) == FALSE)
+		return (data->builtin_parent = 1, TRUE);
+	data->builtin_parent = 0;
+	if (ft_strcmp(curr_list->cmd->value, "cd") == 0)
+	{
+		data->builtin_parent = 1;
+		change_dir(data, curr_list);
+	}
+	else if (ft_strcmp(curr_list->cmd->value, "exit") == 0)
+	{
+		data->builtin_parent = 1;
+		go_exit(data, curr_list);
+	}
+	else if (check_builtin_parent2(data, curr_list) == FALSE)
+		return (FALSE);
+	else
+		return (data->builtin_parent = 0, FALSE);
+	return (TRUE);
+}
+
 int	check_builtin_child(t_data *data, t_list_node *curr_list)
 {
+	int	i;
+	int	status;
+
+	i = 0;
+	status = 1;
 	if (ft_strcmp(curr_list->cmd->value, "pwd") == 0)
 		return (get_curr_dir(data), TRUE);
 	else if (ft_strcmp(curr_list->cmd->value, "env") == 0)
@@ -60,57 +74,49 @@ int	check_builtin_child(t_data *data, t_list_node *curr_list)
 	return (FALSE);
 }
 
-int	before_child_exe(t_data *data, t_list_node *curr_list)
+static void	before_child_exe2(t_data *data, t_list_node *curr_list)
 {
-	unsigned char	status;
-	
-	if (ft_strcmp(curr_list->cmd->value, "cd") == 0)
-	{	
-		check_cd_err(data, curr_list);
-		return (FALSE);
-	}
-	else if (ft_strcmp(curr_list->cmd->value, "exit") == 0)
-	{
-		if (curr_list->cmd->next != NULL)
-		{
-			check_status(curr_list->cmd->next, &status);
-			free_everything(data);
-			exit((int)status);
-		}
-		return (FALSE);
-	}
-	else if (ft_strcmp(curr_list->cmd->value, "export") == 0)
+	if (ft_strcmp(curr_list->cmd->value, "export") == 0)
 	{
 		if (curr_list->cmd->next == NULL)
 		{
 			declare_env(data);
 			free_everything(data);
-			exit(0);
 		}
 		else if (is_valid_ident(data, curr_list->cmd->next) == FALSE)
 			export_err(data, curr_list->cmd->next);
 		else if (curr_list->cmd->next->value[0] == '=')
 			export_err(data, curr_list->cmd->next);
 		else
-		{
 			free_everything(data);
-			exit(0);
-		}
+		exit(0);
 	}
 	else if (ft_strcmp(curr_list->cmd->value, "unset") == 0)
 	{
 		if (curr_list->cmd->next == NULL)
-		{
 			free_everything(data);
-        	exit(0);
-		}
 		if (is_valid_unset(data, curr_list->cmd->next) == FALSE)
 			unset_err(data, curr_list->cmd->next);
 		else
-		{
 			free_everything(data);
-			exit(0);
-		}
+		exit(0);
 	}
+}
+
+int	before_child_exe(t_data *data, t_list_node *curr_list)
+{
+
+	if (ft_strcmp(curr_list->cmd->value, "cd") == 0)
+	{
+		check_cd_err(data, curr_list);
+		return (FALSE);
+	}
+	else if (ft_strcmp(curr_list->cmd->value, "exit") == 0)
+	{
+		if (curr_list->cmd->next != NULL)
+			go_exit(data, curr_list);
+		return (FALSE);
+	}
+	before_child_exe2(data, curr_list);
 	return (TRUE);
 }

@@ -483,8 +483,8 @@ void	split_dollar1(t_data *data, t_token_ptr *dst_ptr, t_token_node *src_h)
 	char	*p_nonchar;
 	char	*env_rpl;
 
-	env_rpl = 0;
 	data->in_dbq = 1;
+	env_rpl = strdup("");
 	p_run = src_h->value;
 	p_same = src_h->value;
 	while (1)
@@ -509,8 +509,8 @@ void	split_dollar0(t_data *data, t_token_ptr *dst_ptr, t_token_node *src_h)
 	char	*p_nonchar;
 	char	*env_rpl;
 
-	env_rpl = 0;
 	data->in_dbq = 0;
+	env_rpl = strdup("");
 	p_run = src_h->value;
 	p_same = src_h->value;
 	while (1)

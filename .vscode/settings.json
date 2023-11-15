@@ -18,6 +18,7 @@
         "type_traits": "c",
         "vector": "c",
         "stdlib.h": "c",
-        "minishell.h": "c"
+        "minishell.h": "c",
+        "locale": "c"
     }
 }

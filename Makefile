@@ -1,14 +1,14 @@
 NAME = minishell
 
-# FLAGS = -Wall -Wextra -Werror -fsanitize=address -g
-FLAGS = -fsanitize=address -g
+FLAGS = -Wall -Wextra -Werror
+# FLAGS = -fsanitize=address -g
 
 LIBFT = $(LIBFT_DIRECTORY)libft.a
 LIBFT_DIRECTORY = ./libft/
 
-# READLINE = /usr/local/opt/readline
+READLINE = /usr/local/opt/readline
 
-READLINE = /opt/homebrew/Cellar/readline/8.2.1/
+# READLINE = /opt/homebrew/Cellar/readline/8.2.1/
 
 SRC = execute.c first_main.c fork_child.c get_path_cmd.c input_error.c\
 	input_output.c mns.c utils.c cd_built_in.c exit_built_in.c\

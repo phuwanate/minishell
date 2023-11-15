@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:40:10 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/08 23:37:48 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/15 12:39:23 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ static void	ext_path(t_list_node *curr_list, t_data *data, char *path_exec)
 	int		i;
 
 	check_slash(data, curr_list);
-	path2 = split_path(data, ft_substr(path_exec, 5, data->len_path),\
-	 curr_list);
+	path2 = split_path(data, ft_substr(path_exec, 5, data->len_path), \
+	curr_list);
 	i = 0;
 	while (path2[i])
 	{
@@ -105,8 +105,8 @@ void	get_path(t_list_node *curr_list, t_data *data)
 	{
 		status = find_path(data->env[i]);
 		data->len_path = ft_strlen(data->env[i]);
-		if(status == 1 && data->len_path == 5)
-			break;
+		if (status == 1 && data->len_path == 5)
+			break ;
 		if (status == 1)
 		{
 			path_exec = data->env[i];

@@ -6,59 +6,65 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 20:45:03 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/07 21:28:46 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/15 13:38:21 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int flag_check(t_token_node *curr_token)
+static int	flag_check(t_token_node *curr_token)
 {
-    size_t  i;
+	size_t	i;
 
-    if(curr_token->value[0] != '-')
-        return (FALSE);
-    i = 1;
-    while (curr_token->value[i])
-    {
-        if (curr_token->value[i] != 'n')
-            return(FALSE);
-        i++;
-    }
-    return (TRUE);
+	if (curr_token->value[0] != '-')
+		return (FALSE);
+	i = 1;
+	while (curr_token->value[i])
+	{
+		if (curr_token->value[i] != 'n')
+			return (FALSE);
+		i++;
+	}
+	return (TRUE);
 }
 
-void echo_words(t_data *data, t_token_node *curr_token)
+static void	echo_no_flag(t_token_node *curr_token)
 {
-    (void)data;    
-    
-    if (curr_token == NULL)
-        printf("\n");
-    else if (flag_check(curr_token) == FALSE)
-    {
-        while (curr_token != NULL)
-        {
-            if (curr_token->next == NULL)
-            {
-                ft_putendl_fd(curr_token->value, 1);
-                break ;
-            }
-            ft_putstr_fd(curr_token->value, 1);
-            if (curr_token->next != NULL)
-                ft_putstr_fd(" ", 1);
-            curr_token = curr_token->next;
-        }
-    }
-    else if (curr_token->next != NULL)
-    {
-        curr_token = curr_token->next;
-        while (curr_token != NULL)
-        {
-            ft_putstr_fd(curr_token->value, 1);
-            if (curr_token->next != NULL)
-                ft_putstr_fd(" ", 1);
-            curr_token = curr_token->next;
-        }
-    }
-    return ;
+	while (curr_token != NULL)
+	{
+		if (curr_token->next == NULL)
+		{
+			ft_putendl_fd(curr_token->value, 1);
+			break ;
+		}
+		ft_putstr_fd(curr_token->value, 1);
+		if (curr_token->next != NULL)
+			ft_putstr_fd(" ", 1);
+		curr_token = curr_token->next;
+	}
+}
+
+void	echo_words(t_data *data, t_token_node *curr_token)
+{
+
+	if (curr_token == NULL)
+	{
+		printf("\n");
+		exit (0);
+	}
+	else if (flag_check(curr_token) == FALSE)
+		echo_no_flag(curr_token);
+	else if (curr_token->next != NULL)
+	{
+		curr_token = curr_token->next;
+		while (curr_token != NULL)
+		{
+			ft_putstr_fd(curr_token->value, 1);
+			if (curr_token->next != NULL)
+				ft_putstr_fd(" ", 1);
+			curr_token = curr_token->next;
+		}
+	}
+	data->errnum = 0;
+	return ;
 }

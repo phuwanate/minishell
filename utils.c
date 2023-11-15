@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 14:24:24 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/06 22:23:01 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/15 14:41:18 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,11 @@ int	find_path(const char *s1)
 	return (1);
 }
 
-int is_directory(const char *path) 
+int	is_directory(const char *path)
 {
-    struct stat path_stat;
-	
-    if(stat(path, &path_stat) != 0)
-		  return(0);
-	return S_ISDIR(path_stat.st_mode);
+	struct stat	path_stat;
+
+	if (stat(path, &path_stat) != 0)
+		return (0);
+	return (S_ISDIR(path_stat.st_mode));
 }
