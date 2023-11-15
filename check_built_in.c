@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 09:53:15 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/15 14:44:17 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/15 19:05:23 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,10 @@ static void	before_child_exe2(t_data *data, t_list_node *curr_list)
 
 int	before_child_exe(t_data *data, t_list_node *curr_list)
 {
-
 	if (ft_strcmp(curr_list->cmd->value, "cd") == 0)
 	{
+		if (ft_strcmp(curr_list->cmd->next->value, "-") == 0)
+			return (cd_old(data), FALSE);
 		check_cd_err(data, curr_list);
 		return (FALSE);
 	}

@@ -127,9 +127,9 @@ char	*strjoin_f(char *src, char *dst)
 
 	if (!dst && !src)
 		return (NULL);
-	if (!dst || !*dst)
+	if (!dst)
 		return (src);
-	else if (!src || !*src)
+	else if (!src)
 		return (dst);
 	count = ft_strlen(src) + ft_strlen(dst);
 	res = (char *)malloc(sizeof(char) * (count + 1));
@@ -160,7 +160,7 @@ void	group_init(t_group_ptr	*group)
 }
 
 /* ************************************************************************** */
-/////////////////////////////mns8-mns_free.c////////////////////////////////////
+/////////////////////////////mns9-mns_free.c////////////////////////////////////
 
 void	free_char_2d(char **ptr)
 {
@@ -227,7 +227,7 @@ void	free_mns(t_data *data)
 }
 
 /* ************************************************************************** */
-/////////////////////////////mns7-token_to_organize.c///////////////////////////
+/////////////////////////////mns8-token_to_organize.c///////////////////////////
 
 static void	skip_next_node(t_token_node *node)
 {
@@ -347,7 +347,7 @@ void	token_to_organize(t_data *data, t_token_ptr *input)
 }
 
 /* ************************************************************************** */
-//////////////////////////////mns6-input_to_token.c/////////////////////////////
+//////////////////////////////mns7-input_to_token.c/////////////////////////////
 
 static size_t	index_of_c(const char *s, int c)
 {
@@ -453,7 +453,7 @@ void	env_check(char **env_rpl, char **p_nonchar, char **p_same, t_data *data)
 }
 
 /* ************************************************************************** */
-//////////////////////////////mns5-input_to_token.c/////////////////////////////
+//////////////////////////////mns6-input_to_token.c/////////////////////////////
 
 char	*match_outside_qoute(char *p_tmp, char *must_match, int match_in_dbq)
 {
@@ -483,6 +483,7 @@ void	split_dollar1(t_data *data, t_token_ptr *dst_ptr, t_token_node *src_h)
 	char	*p_nonchar;
 	char	*env_rpl;
 
+	p_nonchar = 0;
 	data->in_dbq = 1;
 	env_rpl = strdup("");
 	p_run = src_h->value;
@@ -509,6 +510,7 @@ void	split_dollar0(t_data *data, t_token_ptr *dst_ptr, t_token_node *src_h)
 	char	*p_nonchar;
 	char	*env_rpl;
 
+	p_nonchar = 0;
 	data->in_dbq = 0;
 	env_rpl = strdup("");
 	p_run = src_h->value;
@@ -529,7 +531,7 @@ void	split_dollar0(t_data *data, t_token_ptr *dst_ptr, t_token_node *src_h)
 }
 
 /* ************************************************************************** */
-//////////////////////////////mns4-input_to_token.c/////////////////////////////
+//////////////////////////////mns5-input_to_token.c/////////////////////////////
 
 void	split_pipe(t_data *data, t_token_ptr *p_tmp, t_token_node *src_h)
 {
@@ -656,7 +658,7 @@ void	split_heredoc(t_data *data, t_token_ptr *p_tmp, t_token_node *src_h)
 }
 
 /* ************************************************************************** */
-////////////////////////////mns3-input_to_token.c//////////////////////////////
+////////////////////////////mns4-input_to_token.c//////////////////////////////
 
 static void	split_space(t_data *data, t_token_ptr *p_tmp, t_token_node *src_h)
 {
@@ -772,7 +774,7 @@ void	input_to_token(t_data *data, char *input)
 	data->lst_token.tail = tmp1.tail;
 }
 
-////////////////////////////mns2-main_while.c////////////////////////////////////
+////////////////////////////mns3-main_while.c////////////////////////////////////
 /* ************************************************************************** */
 
 static void	err_print(t_data *data, char *str, int err_num)
@@ -878,6 +880,66 @@ int	main_while (t_data *data)
 	first_execute(data);
 	return (0);
 }
+/* ************************************************************************** */
+////////////////////////////mns2-init_utils.c/////////////////////////////
+
+char	*env_ky(char **env, char *key)
+{
+	size_t	i;
+	size_t	str_len;
+	size_t	key_len;
+
+	i = 0;
+	key_len = ft_strlen(key);
+	while (env[i])
+	{
+		str_len = index_of_c(env[i], '=');
+		if (key_len > str_len)
+			str_len = key_len;
+		if (ft_strncmp(key, env[i], str_len) == 0)
+			return (ft_strchr(env[i], '=') + 1);
+		i++;
+	}
+	return (NULL);
+}
+
+char	*shlvl_update(char **envp)
+{
+	int	shlvl_num;
+
+	shlvl_num = ft_atoi(env_ky(envp, "SHLVL"));
+	if (shlvl_num)
+		shlvl_num++;
+	return (strjoin_f(ft_strdup("SHLVL="), ft_itoa(shlvl_num)));
+}
+
+int	env_find(char **envp, char *key)
+{
+	int	i;
+	int	row_shlvl;
+
+	i = 0;
+	row_shlvl = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(key, envp[i], ft_strlen(key)) == 0)
+			break ;
+		if (ft_strncmp(key, envp[i], ft_strlen(key)) != 0)
+			row_shlvl++;
+		i++;
+	}
+	return (row_shlvl);
+}
+
+int	row_count (char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
 
 /* ************************************************************************** */
 ////////////////////////////mns1-mns_init.c////////////////////////////////////
@@ -885,24 +947,28 @@ int	main_while (t_data *data)
 static void	env_init(t_data *data, char **envp)
 {
 	int	i;
+	int	j;
 	int	row;
 
 	i = 0;
-	row = 0;
-	while (envp[row])
-		row++;
-	data->env = (char **)malloc(sizeof(char *) * (row + 1));
+	j = 0;
+	row = row_count(envp);
+	data->env = (char **)ft_calloc(sizeof(char *), (row + 1));
 	if (!data->env)
 		return ;
-	while (i < row)
+	while (j < row)
 	{
-		data->env[i] = ft_strdup(envp[i]);
+		if (env_ky(envp, "SHLVL") && (j == env_find(envp, "SHLVL=")))
+			data->env[i] = shlvl_update(envp);
+		else if (env_ky(envp, "OLDPWD") && (j == env_find(envp, "OLDPWD=")))
+			data->env[i] = ft_strdup(envp[++j]);
+		else
+			data->env[i] = ft_strdup(envp[j]);
 		if (!data->env[i])
 			return (free_char_2d(data->env));
 		i++;
+		j++;
 	}
-	data->env[row] = 0;
-	data->env_row_max = row;
 }
 
 void	sig_quit(int signum)
@@ -950,7 +1016,6 @@ int	mns_init(t_data *data, char **envp)
 	data->errnum = 0;
 	data->in_dbq = 0;
 	data->env = 0;
-	data->env_row_max = 0;
 	data->lst_token.head = 0;
 	data->lst_token.tail = 0;
 	data->grouped_token = 0;
@@ -967,6 +1032,7 @@ int	mns_init(t_data *data, char **envp)
 	if (!signal_init ())
 		return (0);
 	env_init(data, envp);
+	data->env_row_max = row_count(data->env);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:05:57 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/15 12:41:44 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/15 18:55:17 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,5 +152,10 @@ void	free_grouped_token(t_list_node *curr_list);
 void	free_everything(t_data *data);
 void	check_cd_err(t_data *data, t_list_node *curr_list);
 void	execeve_fail(t_data *data, t_token_node *curr_token);
+void	cd_update(t_data *data, char *old_pwd);
+void	cd_err(t_data *data, t_list_node *curr_list, int errno_nb);
+void	cd_old(t_data *data);
+void	cd_update_old(t_data *data, char *old_pwd);
+char	*find_home(t_data *data);
 
 #endif
