@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 13:46:44 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/16 14:15:46 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/16 21:44:42 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 int	is_bash(t_list_node *curr_list, t_data *data)
 {
-	if (curr_list->cmd->value[0] == '.' && curr_list->cmd->next == NULL)
+	if ((curr_list->cmd->value[0] == '.' && curr_list->cmd->next == NULL)\
+	|| (curr_list->cmd->value[0] == '.' && curr_list->cmd->value[1] == '.'))
 		return (FALSE);
 	else if (curr_list->cmd->value[0] == '.' && \
 	curr_list->cmd->value[1] == '\0')
+	{
 		go_exec(data, curr_list);
+	}
 	return (TRUE);
 }
 

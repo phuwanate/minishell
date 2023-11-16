@@ -6,9 +6,9 @@ FLAGS = -Wall -Wextra -Werror
 LIBFT = $(LIBFT_DIRECTORY)libft.a
 LIBFT_DIRECTORY = ./libft/
 
-READLINE = /usr/local/opt/readline
+# READLINE = /usr/local/opt/readline
 
-# READLINE = /opt/homebrew/Cellar/readline/8.2.1/
+READLINE = /opt/homebrew/Cellar/readline/8.2.1/
 
 SRC = execute.c first_main.c fork_child.c get_path_cmd.c input_error.c\
 	input_output.c utils.c cd_built_in.c exit_built_in.c\
