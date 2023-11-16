@@ -19,6 +19,8 @@
         "vector": "c",
         "stdlib.h": "c",
         "minishell.h": "c",
-        "locale": "c"
+        "locale": "c",
+        "get_path_utilsç": "c",
+        "typeinfo": "c"
     }
 }

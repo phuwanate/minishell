@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 09:53:15 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/15 19:05:23 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/16 12:08:05 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@ static int	check_builtin_parent2(t_data *data, t_list_node *curr_list)
 	{
 		data->builtin_parent = 1;
 		if (export_new_env(data, curr_list->cmd->next) == FALSE)
-			return (data->builtin_parent = 0, FALSE);
+			return (data->builtin_parent = 1, TRUE);
 		data->errnum = 0;
 	}
 	else if (ft_strcmp(curr_list->cmd->value, "unset") == 0)
 	{
 		data->builtin_parent = 1;
 		if (unset_env(data, curr_list->cmd->next) == FALSE)
-			return (data->builtin_parent = 0, FALSE);
+			return (data->builtin_parent = 1, TRUE);
 		data->errnum = 0;
 	}
 	else
 		return (data->builtin_parent = 0, FALSE);
-	return (TRUE);
+	return (data->builtin_parent = 1, TRUE);
 }
 
 int	check_builtin_parent(t_data *data, t_list_node *curr_list)
@@ -53,8 +53,6 @@ int	check_builtin_parent(t_data *data, t_list_node *curr_list)
 	}
 	else if (check_builtin_parent2(data, curr_list) == FALSE)
 		return (FALSE);
-	else
-		return (data->builtin_parent = 0, FALSE);
 	return (TRUE);
 }
 
