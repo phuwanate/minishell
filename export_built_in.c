@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 11:23:15 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/16 15:56:46 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/16 17:01:50 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ int	export_new_env(t_data *data, t_token_node *curr_token)
 	int		status;
 
 	status = 0;
+	if (curr_token == NULL)
+		declare_env(data);
 	while (curr_token != NULL)
 	{
 		if (check_new_env(data, curr_token, &status) == TRUE)

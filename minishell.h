@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:05:57 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/16 16:11:11 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/16 16:49:24 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,5 +199,6 @@ void	make_new_env(t_data *data, t_token_node *curr_token, char **new_env);
 int		check_before_unset(t_data *data, t_token_node *curr_token, int *status);
 int		before_unset(t_data *data, t_token_node *curr_token);
 void	loop_unset(t_data *data, t_token_node *curr_token, char **new_env);
+void	old_pwd_check(t_data *data, t_list_node *curr_list, char *curr_pwd);
 
 #endif
