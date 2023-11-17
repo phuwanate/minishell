@@ -6,7 +6,7 @@
 /*   By: plertsir <plertsir@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 11:23:15 by plertsir          #+#    #+#             */
-/*   Updated: 2023/11/16 17:01:50 by plertsir         ###   ########.fr       */
+/*   Updated: 2023/11/17 17:15:42 by plertsir         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ int	declare_env(t_data *data)
 int	is_duplicate(char *s1, char *s2)
 {
 	int		i;
-	size_t	s1_len;
+	int		s1_len;
 
 	i = 0;
 	s1_len = len_env(s1);
-	while (s1_len > 0)
+	while ((s1_len != 0 || s2[i]) && s2[i] != '=')
 	{
 		if (s1[i] != s2[i])
 			return (0);
